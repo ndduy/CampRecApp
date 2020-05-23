@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "716476766116",
+    "firebase_url": "https://camprecapp-c6aca.firebaseio.com",
+    "project_id": "camprecapp-c6aca",
+    "storage_bucket": "camprecapp-c6aca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716476766116:android:adadc4afbbc9db0a831331",
+        "android_client_info": {
+          "package_name": "com.example.camprecapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716476766116-9hd6kn9qsk9bs16jqa69mqr0tpqedp3p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.camprecapp",
+            "certificate_hash": "178123830a23ab97ca82d7a55c056854d47ae773"
+          }
+        },
+        {
+          "client_id": "716476766116-vq4n6k640vh7aa7f83n6c9dpr9hnjq2s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArq1agKoGllFd5H7Zu2ioFnyWw0LI39gM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716476766116-vq4n6k640vh7aa7f83n6c9dpr9hnjq2s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
