@@ -10,12 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".features.company.CompanyAddJob"
-            android:parentActivityName=".features.company.CompanyJobs"/>
-        <activity android:name=".features.company.CompanyJobs"
+            android:parentActivityName=".features.company.fragment.CompanyJobs"/>
+        <activity android:name=".features.company.fragment.CompanyJobs"
             android:launchMode="singleTop"/>
-        <activity android:name=".features.company.CompanyViewSubApplication" />
+        <activity android:name=".features.company.fragment.CompanyViewSubApplication" />
         <activity android:name=".features.company.CompanyHome" />
-        <activity android:name=".features.company.ViewCompanyProfile" />
+        <activity android:name=".features.company.fragment.ViewCompanyProfile" />
         <activity android:name=".features.company.CompanySignUp" />
         <activity android:name=".features.student.ViewStudentProfile" />
         <activity android:name=".features.student.StudentViewJobs" />

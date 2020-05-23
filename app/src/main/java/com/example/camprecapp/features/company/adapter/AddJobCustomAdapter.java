@@ -10,32 +10,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.models.JobPost;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class AddJobCustomAdapter extends RecyclerView.Adapter {
-    ArrayList<String> titles = new ArrayList<>();
-    ArrayList<String> description = new ArrayList<>();
-    ArrayList<String> companyName = new ArrayList<>();
-    ArrayList<String> salary = new ArrayList<>();
-    ArrayList<String> location = new ArrayList<>();
-    ArrayList<String> jobType = new ArrayList<>();
-    Context context;
+public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJobCustomAdapter.ItemHolder> {
 
-    public AddJobCustomAdapter(ArrayList<String>titles,ArrayList<String>description,ArrayList<String>companyName,
-                               ArrayList<String>salary,ArrayList<String>location,
-                               ArrayList<String>jobType,Context context){
-        this.context = context;
-        this.titles = titles;
-        this.description = description;
-        this.companyName = companyName;
-        this.salary = salary;
-        this.location = location;
-        this.jobType = jobType;
+
+    /**
+     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
+     * FirestoreRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+    public AddJobCustomAdapter(@NonNull FirestoreRecyclerOptions<JobPost> options) {
+        super(options);
     }
-    private class ItemHolder extends RecyclerView.ViewHolder {
+
+    class ItemHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle;
         TextView textViewDescription;
         TextView txtViewCompanyName;
@@ -54,9 +50,10 @@ public class AddJobCustomAdapter extends RecyclerView.Adapter {
             txtViewLocation = (TextView) itemView.findViewById(R.id.txtViewLocation);
         }
     }
+
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.company_job_list_layout, parent, false);
 
@@ -64,17 +61,12 @@ public class AddJobCustomAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ItemHolder) holder).textViewTitle.setText(titles.get(position));
-        ((ItemHolder) holder).txtViewCompanyName.setText(description.get(position));
-        ((ItemHolder) holder).txtViewJobType.setText(description.get(position));
-        ((ItemHolder) holder).textViewDescription.setText(description.get(position));
-        ((ItemHolder) holder).txtViewSalary.setText(description.get(position));
-        ((ItemHolder) holder).txtViewLocation.setText(description.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return titles.size();
+    protected void onBindViewHolder(@NonNull ItemHolder holder, int position, @NonNull JobPost jobPost) {
+        ((ItemHolder) holder).textViewTitle.setText(jobPost.getTitle());
+        ((ItemHolder) holder).txtViewCompanyName.setText(jobPost.getCompanyName());
+        ((ItemHolder) holder).txtViewJobType.setText(jobPost.getJobType());
+        ((ItemHolder) holder).textViewDescription.setText(jobPost.getDescription());
+        ((ItemHolder) holder).txtViewSalary.setText(jobPost.getSalary());
+        ((ItemHolder) holder).txtViewLocation.setText(jobPost.getLocation());
     }
 }

@@ -2,14 +2,25 @@ package com.example.camprecapp.features.company;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.features.company.fragment.CompanyJobs;
+import com.example.camprecapp.features.company.fragment.CompanyOverview;
+import com.example.camprecapp.features.company.fragment.CompanyViewSubApplication;
+import com.example.camprecapp.features.company.fragment.ViewCompanyProfile;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class CompanyHome extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -19,42 +30,37 @@ public class CompanyHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_home);
 
-        bottomNavigationView= findViewById(R.id.botComNavigationView);
+        openFragment(new CompanyOverview());
 
-        bottomNav();
-
-    }
-    void bottomNav(){
-        //Set the bottom navigation item to checked
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(3);
-        menuItem.setChecked(true);
+        bottomNavigationView = findViewById(R.id.botComNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.navHome:
+                        openFragment(new CompanyOverview());
                         break;
                     case R.id.navJobs:
-                        Intent viewJobs = new Intent(CompanyHome.this, CompanyJobs.class);
-                        startActivity(viewJobs);
-                        overridePendingTransition(0,0);
+                        openFragment(new CompanyJobs());
                         break;
                     case R.id.navViewAppli:
-                        Intent profile = new Intent(CompanyHome.this, CompanyViewSubApplication.class);
-                        startActivity(profile);
-                        overridePendingTransition(0, 0);
+                        openFragment(new CompanyViewSubApplication());
                         break;
                     case R.id.navProfile:
-                        Intent comProfile = new Intent(CompanyHome.this, ViewCompanyProfile.class);
-                        startActivity(comProfile);
-                        overridePendingTransition(0, 0);
+                        openFragment(new ViewCompanyProfile());
                         break;
                 }
 
                 return false;
             }
         });
+
+    }
+
+    void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.commit();
     }
 }

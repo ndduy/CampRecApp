@@ -12,19 +12,21 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.camprecapp.R;
-import com.example.camprecapp.models.StudentInfo;
+import com.example.camprecapp.models.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class StudentSignUp extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
-    StudentInfo studentInfo;
+    Student studentInfo;
     RadioButton student, company;
     DatabaseReference databaseReference;
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class StudentSignUp extends AppCompatActivity {
         final EditText editTextSignUpName = findViewById(R.id.editTextStuName);
         final EditText editTextPhoneNumber = findViewById(R.id.editTextStuPhoneNumber);
         final EditText editTextSignUpPass = findViewById(R.id.editTextLogInPass);
-        studentInfo =new StudentInfo();
+        studentInfo =new Student();
         editTextSignUpName.requestFocus();
 
         //establishing connection with firebase
@@ -58,18 +60,18 @@ public class StudentSignUp extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
+                                            firebaseUser = firebaseAuth.getCurrentUser();
+
                                             String phoneNumber = editTextPhoneNumber.getText().toString();
                                             String studentName = editTextSignUpName.getText().toString();
                                             String studentEmail = editTextSignUpEmail.getText().toString();
-                                            String studentPassword = editTextSignUpEmail.getText().toString();
                                             studentInfo.setPhoneNumber(phoneNumber);
                                             studentInfo.setName(studentName);
                                             studentInfo.setEmail(studentEmail);
-                                            studentInfo.setPassword(studentPassword);
-                                            studentInfo.setType("Student");
+                                            studentInfo.setuId(firebaseUser.getUid());
 
                                             FirebaseFirestore ff = FirebaseFirestore.getInstance();
-                                            ff.collection("CampRecApp").document(studentEmail).set(studentInfo);
+                                            ff.collection("Student").document(studentEmail).set(studentInfo);
 
                                             Toast.makeText(StudentSignUp.this, "Thank you for signing up!", Toast.LENGTH_LONG).show();
                                             startActivity(new Intent(StudentSignUp.this, StudentHome.class));

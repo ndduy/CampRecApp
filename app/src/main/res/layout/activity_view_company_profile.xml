@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.company.ViewCompanyProfile">
+    tools:context=".features.company.fragment.ViewCompanyProfile">
 
     <TextView
         android:id="@+id/txtViewCompanyName"

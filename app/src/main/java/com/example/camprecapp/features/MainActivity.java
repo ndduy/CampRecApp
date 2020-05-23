@@ -16,13 +16,13 @@ import com.example.camprecapp.features.student.StudentSignUp;
 import com.example.camprecapp.features.company.CompanyHome;
 import com.example.camprecapp.features.company.CompanySignUp;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         editTextLogInPass = findViewById(R.id.editTextLogInPass);
         editTextLogInEmail.requestFocus();
         firebaseAuth = FirebaseAuth.getInstance();
-
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
         logIn();
@@ -54,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         activeUser();
 
     }
-    void logIn(){
+
+    void logIn() {
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,18 +63,29 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+
+                                        firebaseUser = firebaseAuth.getCurrentUser();
+
                                         FirebaseFirestore ff = FirebaseFirestore.getInstance();
-                                        ff.collection("CampRecApp").document(editTextLogInEmail.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+                                        ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                if (documentSnapshot.get("type").equals("Student")) {
-                                                    Intent i = new Intent(MainActivity.this, StudentHome.class);
-                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(i);
-                                                } else {
-                                                    Intent i = new Intent(MainActivity.this, CompanyHome.class);
-                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(i);
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                    DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
+                                                    goToCompanyPage(company);
+
+                                                }
+                                            }
+                                        });
+
+                                        ff.collection("Student").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    if (task.getResult().size() > 0) {
+                                                        goToStudentPage();
+                                                    }
                                                 }
                                             }
                                         });
@@ -91,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    void signUp(){
+
+    void signUp() {
         btnStudentSignUp.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -109,25 +120,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    void activeUser(){
+
+    void activeUser() {
         if (firebaseUser != null) {
             //when user is active show the login activity
             FirebaseFirestore ff = FirebaseFirestore.getInstance();
-            ff.collection("CampRecApp").document(firebaseUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.get("type").equals("Student")) {
-                        Intent i = new Intent(MainActivity.this, StudentHome.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    } else {
-                        Intent i = new Intent(MainActivity.this, CompanyHome.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
+                        goToCompanyPage(company);
                     }
                 }
-                // startActivity(new Intent(MainActivity.this,StudentHome.class));
+
+            });
+
+            ff.collection("Student").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().size() > 0) {
+                            goToStudentPage();
+                        }
+                    }
+                }
             });
         }
+
+    }
+
+    void goToStudentPage() {
+        Intent i = new Intent(MainActivity.this, StudentHome.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+    }
+
+    void goToCompanyPage(DocumentReference company) {
+        Intent i = new Intent(MainActivity.this, CompanyHome.class);
+        i.putExtra("company", company.getPath());
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 }

@@ -11,18 +11,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.camprecapp.R;
-import com.example.camprecapp.models.CompanyInfo;
+import com.example.camprecapp.models.Company;
+import com.example.camprecapp.models.CompanyAdmin;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CompanySignUp extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
-    CompanyInfo companyInfo;
+    Company company;
+    CompanyAdmin companyAdmin;
     DatabaseReference databaseReference;
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,8 @@ public class CompanySignUp extends AppCompatActivity {
         final EditText editTextAddress = findViewById(R.id.editTextComAddress);
         final EditText editTextCity = findViewById(R.id.editTextComCity);
         final EditText editTextComEmail = findViewById(R.id.editTextComLogInEmail);
-        companyInfo =new CompanyInfo();
+        company = new Company();
+        companyAdmin = new CompanyAdmin();
         editTextCompanyName.requestFocus();
 
         //establishing connection with firebase
@@ -62,6 +69,8 @@ public class CompanySignUp extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
+                                            firebaseUser = firebaseAuth.getCurrentUser();
+
                                             String phoneNumber = editTextPhoneNumber.getText().toString();
                                             String companyName = editTextCompanyName.getText().toString();
                                             String companyEmail = editTextComEmail.getText().toString();
@@ -69,18 +78,22 @@ public class CompanySignUp extends AppCompatActivity {
                                             String companyAddress = editTextAddress.getText().toString();
                                             String companyCity = editTextCity.getText().toString();
 
-                                            companyInfo.setPhoneNumber(phoneNumber);
-                                            companyInfo.setCompanyName(companyName);
-                                            companyInfo.setCompanyEmail(companyEmail);
-                                            companyInfo.setAddress(companyAddress);
-                                            companyInfo.setCity(companyCity);
-                                            companyInfo.setName(companyUserName);
-                                            companyInfo.setType("Company");
+                                            companyAdmin.setPhoneNumber(phoneNumber);
+                                            companyAdmin.setName(companyUserName);
+                                            companyAdmin.setEmail(companyEmail);
+                                            companyAdmin.setuId(firebaseUser.getUid());
+                                            company.setAddress(companyAddress);
+                                            company.setCity(companyCity);
+                                            company.setName(companyName);
 
-                                            FirebaseFirestore ff = FirebaseFirestore.getInstance();
-                                            ff.collection("CampRecApp").document(companyEmail).set(companyInfo);
-                                            //below is to create subdocument in firebase
-                                            //ff.collection("CampRecApp").document(companyEmail).collection("jobs").document("jobid").set(companyInfo);
+                                            final FirebaseFirestore ff = FirebaseFirestore.getInstance();
+                                            ff.collection("Company").add(company).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    companyAdmin.setCompany(documentReference);
+                                                    ff.collection("CompanyAdmin").add(companyAdmin);
+                                                }
+                                            });
 
                                             Toast.makeText(CompanySignUp.this, "Thank you for signing up!", Toast.LENGTH_LONG).show();
                                             startActivity(new Intent(CompanySignUp.this, CompanyHome.class));
