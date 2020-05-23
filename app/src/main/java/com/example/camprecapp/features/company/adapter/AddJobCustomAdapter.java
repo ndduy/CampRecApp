@@ -1,4 +1,4 @@
-package com.example.camprecapp;
+package com.example.camprecapp.features.company.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.camprecapp.R;
 
 import org.w3c.dom.Text;
 

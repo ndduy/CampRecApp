@@ -1,4 +1,4 @@
-package com.example.camprecapp;
+package com.example.camprecapp.features.company;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.camprecapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class CompanyHome extends AppCompatActivity {

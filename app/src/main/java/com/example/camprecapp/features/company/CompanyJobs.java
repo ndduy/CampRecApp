@@ -1,4 +1,4 @@
-package com.example.camprecapp;
+package com.example.camprecapp.features.company;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.camprecapp.features.company.adapter.AddJobCustomAdapter;
+import com.example.camprecapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;

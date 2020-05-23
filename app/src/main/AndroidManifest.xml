@@ -9,19 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CompanyAddJob"
-            android:parentActivityName=".CompanyJobs"/>
-        <activity android:name=".CompanyJobs"
+        <activity android:name=".features.company.CompanyAddJob"
+            android:parentActivityName=".features.company.CompanyJobs"/>
+        <activity android:name=".features.company.CompanyJobs"
             android:launchMode="singleTop"/>
-        <activity android:name=".CompanyViewSubApplication" />
-        <activity android:name=".CompanyHome" />
-        <activity android:name=".ViewCompanyProfile" />
-        <activity android:name=".CompanySignUp" />
-        <activity android:name=".ViewStudentProfile" />
-        <activity android:name=".StudentViewJobs" />
-        <activity android:name=".StudentHome" />
-        <activity android:name=".StudentSignUp" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".features.company.CompanyViewSubApplication" />
+        <activity android:name=".features.company.CompanyHome" />
+        <activity android:name=".features.company.ViewCompanyProfile" />
+        <activity android:name=".features.company.CompanySignUp" />
+        <activity android:name=".features.student.ViewStudentProfile" />
+        <activity android:name=".features.student.StudentViewJobs" />
+        <activity android:name=".features.student.StudentHome" />
+        <activity android:name=".features.student.StudentSignUp" />
+        <activity android:name=".features.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

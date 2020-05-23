@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".CompanyAddJob">
+    tools:context=".features.company.CompanyAddJob">
 
     <EditText
         android:id="@+id/editTextTitle"

@@ -1,4 +1,4 @@
-package com.example.camprecapp;
+package com.example.camprecapp.features.student;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,18 +8,21 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.camprecapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class StudentViewJobs extends AppCompatActivity {
+public class StudentHome extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_view_jobs);
+        setContentView(R.layout.activity_student_home);
 
         bottomNavigationView = findViewById(R.id.botNavigationView);
+
         bottomNav();
+
 
     }
     void bottomNav(){
@@ -33,15 +36,15 @@ public class StudentViewJobs extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.navHome:
-                        Intent home = new Intent(StudentViewJobs.this, StudentHome.class);
-                        startActivity(home);
-                        overridePendingTransition(0, 0);
                         break;
                     case R.id.navViewJobs:
+                        Intent viewJobs = new Intent(StudentHome.this, StudentViewJobs.class);
+                        startActivity(viewJobs);
+                        overridePendingTransition(0,0);
                         break;
                     case R.id.navProfile:
-                        Intent updateProfile = new Intent(StudentViewJobs.this, ViewStudentProfile.class);
-                        startActivity(updateProfile);
+                        Intent profile = new Intent(StudentHome.this, ViewStudentProfile.class);
+                        startActivity(profile);
                         overridePendingTransition(0, 0);
                         break;
                 }

@@ -1,4 +1,4 @@
-package com.example.camprecapp;
+package com.example.camprecapp.models;
 
 public class StudentInfo {
     private String email;
