@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     if (task.getResult().size() > 0) {
-                                                        goToStudentPage();
+                                                        DocumentReference student = task.getResult().getDocuments().get(0).getReference();
+                                                        goToStudentPage(student);
                                                     }
                                                 }
                                             }
@@ -141,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         if (task.getResult().size() > 0) {
-                            goToStudentPage();
+                            DocumentReference student = task.getResult().getDocuments().get(0).getReference();
+                            goToStudentPage(student);
                         }
                     }
                 }
@@ -150,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void goToStudentPage() {
+    void goToStudentPage(DocumentReference student) {
         Intent i = new Intent(MainActivity.this, StudentHome.class);
+        i.putExtra("student", student.getPath());
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
     }

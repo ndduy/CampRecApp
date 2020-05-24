@@ -1,4 +1,4 @@
-package com.example.camprecapp.features.company.fragment;
+package com.example.camprecapp.features.student.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,47 +11,52 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.camprecapp.features.company.CompanyAddJob;
-import com.example.camprecapp.features.company.adapter.AddJobCustomAdapter;
 import com.example.camprecapp.R;
+import com.example.camprecapp.features.MainActivity;
+import com.example.camprecapp.features.company.CompanyHome;
+import com.example.camprecapp.features.company.adapter.AddJobCustomAdapter;
+import com.example.camprecapp.features.student.StudentJobApplication;
 import com.example.camprecapp.models.JobPost;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.firebase.ui.firestore.SnapshotParser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class CompanyJobs extends Fragment {
+public class StudentViewJobs extends Fragment {
     AddJobCustomAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_company_view_jobs, container, false);
+        return inflater.inflate(R.layout.activity_student_view_jobs, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        FloatingActionButton buttonAddJob = getView().findViewById(R.id.floating_action_button);
-        buttonAddJob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CompanyAddJob.class));
-            }
-        });
         final FirebaseFirestore ff = FirebaseFirestore.getInstance();
-        String company = getActivity().getIntent().getStringExtra("company");
-        Query query = ff.collection("JobPost").whereEqualTo("company", ff.document(company))
+        Query query = ff.collection("JobPost")
                 .orderBy("salary", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<JobPost> options = new FirestoreRecyclerOptions.Builder<JobPost>()
-                .setQuery(query, JobPost.class)
+                .setQuery(query, new SnapshotParser<JobPost>() {
+                    @NonNull
+                    @Override
+                    public JobPost parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        JobPost jobPost = snapshot.toObject(JobPost.class);
+                        jobPost.setDocumentId(snapshot.getReference());
+                        return jobPost;
+                    }
+                })
                 .build();
         adapter = new AddJobCustomAdapter(options, new AddJobCustomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(JobPost item, int position) {
-                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), StudentJobApplication.class);
+                i.putExtra("jobpost", item.getDocumentId().getPath());
+                i.putExtra("student", getActivity().getIntent().getStringExtra("student"));
+                startActivity(i);
             }
         });
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);

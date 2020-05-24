@@ -1,6 +1,7 @@
 package com.example.camprecapp.models;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
 
 public class JobPost {
     private String title;
@@ -10,6 +11,9 @@ public class JobPost {
     private String location;
     private String jobType;
     private DocumentReference company;
+
+    private @Exclude
+    DocumentReference documentId;
 
     public JobPost(String title, String description, String companyName, String salary, String location, String jobType, DocumentReference company) {
         this.title = title;
@@ -78,5 +82,13 @@ public class JobPost {
 
     public void setCompany(DocumentReference company) {
         this.company = company;
+    }
+
+    public DocumentReference getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(DocumentReference documentId) {
+        this.documentId = documentId;
     }
 }

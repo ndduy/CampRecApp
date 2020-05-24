@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".features.company.fragment.CompanyViewSubApplication">
 
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="this is company overview"
+        android:text="this is student overview"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

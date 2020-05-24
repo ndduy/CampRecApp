@@ -1,6 +1,5 @@
 package com.example.camprecapp.features.company.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,6 @@ import com.example.camprecapp.models.JobPost;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-
 public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJobCustomAdapter.ItemHolder> {
 
 
@@ -26,10 +21,18 @@ public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJo
      * FirestoreRecyclerOptions} for configuration options.
      *
      * @param options
+     * @param listener
      */
-    public AddJobCustomAdapter(@NonNull FirestoreRecyclerOptions<JobPost> options) {
+    public AddJobCustomAdapter(@NonNull FirestoreRecyclerOptions<JobPost> options, OnItemClickListener listener) {
         super(options);
+        this.listener = listener;
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(JobPost item, int position);
+    }
+
+    private final OnItemClickListener listener;
 
     class ItemHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle;
@@ -42,13 +45,16 @@ public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJo
         public ItemHolder(View itemView) {
             super(itemView);
 
-            textViewTitle = (TextView) itemView.findViewById(R.id.txtViewJobTitle);
-            txtViewCompanyName = (TextView) itemView.findViewById(R.id.txtViewCompanyName);
-            txtViewJobType = (TextView) itemView.findViewById(R.id.txtViewJobType);
-            textViewDescription = (TextView) itemView.findViewById(R.id.textViewJobDescription);
-            txtViewSalary = (TextView) itemView.findViewById(R.id.txtViewSalary);
-            txtViewLocation = (TextView) itemView.findViewById(R.id.txtViewLocation);
+            textViewTitle = itemView.findViewById(R.id.txtViewJobTitle);
+            txtViewCompanyName = itemView.findViewById(R.id.txtViewCompanyName);
+            txtViewJobType = itemView.findViewById(R.id.txtViewJobType);
+            textViewDescription = itemView.findViewById(R.id.textViewJobDescription);
+            txtViewSalary = itemView.findViewById(R.id.txtViewSalary);
+            txtViewLocation = itemView.findViewById(R.id.txtViewLocation);
+
         }
+
+
     }
 
     @NonNull
@@ -61,12 +67,20 @@ public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJo
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ItemHolder holder, int position, @NonNull JobPost jobPost) {
-        ((ItemHolder) holder).textViewTitle.setText(jobPost.getTitle());
-        ((ItemHolder) holder).txtViewCompanyName.setText(jobPost.getCompanyName());
-        ((ItemHolder) holder).txtViewJobType.setText(jobPost.getJobType());
-        ((ItemHolder) holder).textViewDescription.setText(jobPost.getDescription());
-        ((ItemHolder) holder).txtViewSalary.setText(jobPost.getSalary());
-        ((ItemHolder) holder).txtViewLocation.setText(jobPost.getLocation());
+    protected void onBindViewHolder(@NonNull ItemHolder holder, final int position, @NonNull final JobPost jobPost) {
+        holder.textViewTitle.setText(jobPost.getTitle());
+        holder.txtViewCompanyName.setText(jobPost.getCompanyName());
+        holder.txtViewJobType.setText(jobPost.getJobType());
+        holder.textViewDescription.setText(jobPost.getDescription());
+        holder.txtViewSalary.setText(jobPost.getSalary());
+        holder.txtViewLocation.setText(jobPost.getLocation());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(jobPost, position);
+            }
+        });
+
     }
 }

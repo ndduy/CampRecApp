@@ -71,7 +71,7 @@ public class StudentSignUp extends AppCompatActivity {
                                             studentInfo.setuId(firebaseUser.getUid());
 
                                             FirebaseFirestore ff = FirebaseFirestore.getInstance();
-                                            ff.collection("Student").document(studentEmail).set(studentInfo);
+                                            ff.collection("Student").add(studentInfo);
 
                                             Toast.makeText(StudentSignUp.this, "Thank you for signing up!", Toast.LENGTH_LONG).show();
                                             startActivity(new Intent(StudentSignUp.this, StudentHome.class));

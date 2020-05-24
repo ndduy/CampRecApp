@@ -4,28 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.student.StudentViewJobs">
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/botNavigationView"
+    tools:context=".features.student.fragment.StudentViewJobs">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/design_default_color_surface"
-        app:itemIconTint="@color/bottom_nav_item_change_color"
-        app:itemTextColor="@color/bottom_nav_item_change_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/student_bottom_navigation_menu">
+        android:layout_height="match_parent"
+        app:layout_anchorGravity="center"
+        >
 
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="200dp"
-        android:layout_height="44dp"
-        android:text="this is view job part"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

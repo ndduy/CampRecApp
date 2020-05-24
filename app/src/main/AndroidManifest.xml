@@ -17,10 +17,11 @@
         <activity android:name=".features.company.CompanyHome" />
         <activity android:name=".features.company.fragment.ViewCompanyProfile" />
         <activity android:name=".features.company.CompanySignUp" />
-        <activity android:name=".features.student.ViewStudentProfile" />
-        <activity android:name=".features.student.StudentViewJobs" />
+        <activity android:name=".features.student.fragment.ViewStudentProfile" />
+        <activity android:name=".features.student.fragment.StudentViewJobs" />
         <activity android:name=".features.student.StudentHome" />
         <activity android:name=".features.student.StudentSignUp" />
+        <activity android:name=".features.student.StudentJobApplication" />
         <activity android:name=".features.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

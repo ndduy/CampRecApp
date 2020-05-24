@@ -161,19 +161,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtViewCity" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/botComNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/design_default_color_surface"
-        app:itemIconTint="@color/bottom_nav_item_change_color"
-        app:itemTextColor="@color/bottom_nav_item_change_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/company_bottom_navigation_menu">
 
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
