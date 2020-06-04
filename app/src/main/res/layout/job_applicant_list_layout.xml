@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtViewStatus"
+        android:layout_width="328dp"
+        android:layout_height="52dp"
+        android:text="Status (seen/unseen/processing/rejected)"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="196dp" />
+
+    <TextView
+        android:id="@+id/txtViewJobTitle"
+        android:layout_width="338dp"
+        android:layout_height="38dp"
+        android:text="JobTitle"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="28dp" />
+
+    <TextView
+        android:id="@+id/txtViewApplicantName"
+        android:layout_width="335dp"
+        android:layout_height="45dp"
+        android:text="ApplicantName"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="110dp" />
+
+    <Button
+        android:id="@+id/btnGoToProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Applicant Profile"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="309dp" />
+
+    <Button
+        android:id="@+id/btnDownloadDocuments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DownloadDocument"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="390dp" />
+
+    <Button
+        android:id="@+id/btnGoBack"
+        android:layout_width="202dp"
+        android:layout_height="50dp"
+        android:text="Go Back To Applicant list"
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="474dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
