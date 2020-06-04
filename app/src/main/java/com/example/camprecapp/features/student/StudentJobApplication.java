@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -42,16 +43,23 @@ public class StudentJobApplication extends AppCompatActivity {
         btnApplyJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DocumentReference student = ff.document(getIntent().getStringExtra("student"));
-                DocumentReference jobpost = ff.document(getIntent().getStringExtra("jobpost"));
-                JobApplication jobApplication = new JobApplication(jobpost, student);
-                ff.collection("JobApplication").add(jobApplication).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                final DocumentReference student = ff.document(getIntent().getStringExtra("student"));
+                final DocumentReference jobpost = ff.document(getIntent().getStringExtra("jobpost"));
+                jobpost.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(StudentJobApplication.this, "Job Applied!", Toast.LENGTH_LONG).show();
-                        finish();
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        JobPost jobPostData = task.getResult().toObject(JobPost.class);
+                        JobApplication jobApplication = new JobApplication(jobPostData.getCompany(), jobpost, student);
+                        ff.collection("JobApplication").add(jobApplication).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(StudentJobApplication.this, "Job Applied!", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
                     }
                 });
+
 
             }
         });

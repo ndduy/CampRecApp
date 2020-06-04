@@ -9,46 +9,46 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.models.JobApplication;
 import com.example.camprecapp.models.JobPost;
+import com.example.camprecapp.models.Student;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.ArrayList;
 
 
-public class JobApplicationAdapter extends FirestoreRecyclerAdapter<JobPost, AddJobCustomAdapter.ItemHolder>{
+public class JobApplicationAdapter extends RecyclerView.Adapter<JobApplicationAdapter.ApplicantItemHolder> {
+    private JobApplication[] mDataset;
 
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     * @param listener
-     */
-    public JobApplicationAdapter(@NonNull FirestoreRecyclerOptions<JobPost> options, OnItemClickListener listener) {
-        super(options);
+    public JobApplicationAdapter(JobApplication[] mDataset, OnItemClickListener listener) {
+        this.mDataset = mDataset;
         this.listener = listener;
     }
 
     public interface OnItemClickListener {
-        void onItemClick(JobPost item, int position);
+        void onItemClick(JobApplication item, int position);
     }
 
     private final OnItemClickListener listener;
 
     class ApplicantItemHolder extends RecyclerView.ViewHolder {
-        TextView textViewJobTitle;
-        TextView getTextViewApplicantName;
-        TextView textViewStatus;
+        TextView textViewJobName;
+        TextView textViewJobID;
+        TextView textViewApplicantName;
 
 
         public ApplicantItemHolder(View itemView) {
             super(itemView);
 
-            textViewJobTitle = itemView.findViewById(R.id.txtViewJobTitle);
-            getTextViewApplicantName = itemView.findViewById(R.id.txtViewApplicantName);
-            textViewStatus = itemView.findViewById(R.id.txtViewStatus);
-
+            textViewJobName = itemView.findViewById(R.id.textViewJobName);
+            textViewJobID = itemView.findViewById(R.id.textViewJobID);
+            textViewApplicantName = itemView.findViewById(R.id.textViewApplicantName);
         }
-
 
     }
 
@@ -56,24 +56,31 @@ public class JobApplicationAdapter extends FirestoreRecyclerAdapter<JobPost, Add
     @Override
     public ApplicantItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.activity_company_view_sub_application, parent, false);
+        View row = inflater.inflate(R.layout.company_job_application_list_layout, parent, false);
 
         return new ApplicantItemHolder(row);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ApplicantItemHolder holder, final int position, @NonNull final JobPost jobPost) {
-        holder.textViewJobName.setText(jobPost.getTitle());
-        holder.textViewJobID.setText(jobPost.getCompanyName());
-        holder.textViewApplicantName.setText(jobPost.getJobType());
+    public void onBindViewHolder(ApplicantItemHolder holder, final int position) {
+        final JobApplication jobApplication = mDataset[position];
+
+        holder.textViewJobName.setText(jobApplication.getJobPostData().getTitle());
+        holder.textViewJobID.setText(jobApplication.getJobPostData().getCompanyName());
+        holder.textViewApplicantName.setText(jobApplication.getStudentData().getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(jobPost, position);
+                listener.onItemClick(jobApplication, position);
             }
         });
-
     }
+
+    @Override
+    public int getItemCount() {
+        return mDataset.length;
+    }
+
 
 }
