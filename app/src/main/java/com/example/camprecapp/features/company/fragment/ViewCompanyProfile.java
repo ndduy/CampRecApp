@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
 
@@ -68,11 +69,27 @@ public class ViewCompanyProfile extends Fragment {
     void viewProfile(){
         if (firebaseUser != null) {
 
-            final String studentEmail = firebaseUser.getEmail();
+            final String companyEmail = firebaseUser.getEmail();
 
-            txtViewEmail.setText(studentEmail);
+            txtViewEmail.setText(companyEmail);
             FirebaseFirestore ff = FirebaseFirestore.getInstance();
-            ff.collection("CompanyAdmin").document(studentEmail).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            ff.collection("Company").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        Map<String, Object> map = doc.getData();
+
+                        txtViewName.setText(doc.getString("name"));
+                        txtViewEmail.setText(doc.getString("email"));
+                        txtViewPhoneNo.setText(doc.getString("phoneNumber"));
+                        txtViewCompanyName.setText(doc.getString("companyName"));
+                        txtViewAddress.setText(doc.getString("address"));
+                        txtViewCity.setText(doc.getString("city"));
+                    }
+                }
+            });
+                    /*document(companyEmail).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     DocumentSnapshot doc = task.getResult();
@@ -81,15 +98,11 @@ public class ViewCompanyProfile extends Fragment {
                     txtViewName.setText(doc.getString("name"));
                     txtViewEmail.setText(doc.getString("email"));
                     txtViewPhoneNo.setText(doc.getString("phoneNumber"));
-
-
-
                     txtViewCompanyName.setText(doc.getString("companyName"));
                     txtViewAddress.setText(doc.getString("address"));
                     txtViewCity.setText(doc.getString("city"));
                 }
-            });
-
+            });*/
             btnLogOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

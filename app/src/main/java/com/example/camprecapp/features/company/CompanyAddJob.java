@@ -82,11 +82,11 @@ public class CompanyAddJob extends AppCompatActivity {
                 jobPost.setLocation(location);
 
                 final FirebaseFirestore ff = FirebaseFirestore.getInstance();
-                ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                ff.collection("Company").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
+                            DocumentReference company = task.getResult().getDocuments().get(0).getReference();//getDocumentReference("company");
                             jobPost.setCompany(company);
                             ff.collection("JobPost").add(jobPost).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override

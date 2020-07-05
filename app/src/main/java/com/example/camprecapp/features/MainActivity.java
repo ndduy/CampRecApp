@@ -1,13 +1,16 @@
 package com.example.camprecapp.features;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.camprecapp.R;
@@ -24,7 +27,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_SPEECH_INPUT = 100;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     Button btnLogIn;
@@ -32,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnCompanySignUp;
     EditText editTextLogInEmail;
     EditText editTextLogInPass;
+    Intent intentRecognizer;
+    ImageButton voiceBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +50,54 @@ public class MainActivity extends AppCompatActivity {
         btnLogIn = findViewById(R.id.btnLogin);
         btnStudentSignUp = findViewById(R.id.btnStudentSignUp);
         btnCompanySignUp = findViewById(R.id.btnCompanySignUp);
+        voiceBtn = findViewById(R.id.imgViewVoiceRec);
         editTextLogInEmail = findViewById(R.id.editTextLogInEmail);
         editTextLogInPass = findViewById(R.id.editTextLogInPass);
         editTextLogInEmail.requestFocus();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+        //button to show speech to text dialog
+        voiceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speak();
+            }
+        });
+
         logIn();
         signUp();
         activeUser();
 
+    }
+    void speak() {
+        //intent to show speech to text dialog
+        intentRecognizer = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak Your LogIn Email Address");
+        //start intent
+        try {
+            startActivityForResult(intentRecognizer, REQUEST_CODE_SPEECH_INPUT);
+        }catch (Exception e){
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    //receive voice input and handle it
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+                    //get text array from voice intentx
+                    ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    //set the text view
+                    editTextLogInEmail.setText(matches.get(0));
+                }
+                break;
+            }
+        }
     }
 
     void logIn() {
@@ -68,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
 
                                         FirebaseFirestore ff = FirebaseFirestore.getInstance();
 
-                                        ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        ff.collection("Company").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                                                    DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
+                                                    DocumentReference company = task.getResult().getDocuments().get(0).getReference();//getDocumentReference("company");
                                                     goToCompanyPage(company);
 
                                                 }
@@ -126,11 +173,11 @@ public class MainActivity extends AppCompatActivity {
         if (firebaseUser != null) {
             //when user is active show the login activity
             FirebaseFirestore ff = FirebaseFirestore.getInstance();
-            ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            ff.collection("Company").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
+                        DocumentReference company = task.getResult().getDocuments().get(0).getReference();
                         goToCompanyPage(company);
                     }
                 }

@@ -7,9 +7,13 @@
         />
     <item
         android:id="@+id/navViewJobs"
-        android:icon="@drawable/ic_info"
+        android:icon="@drawable/ic_viewapplication"
         android:title="View Jobs"
         />
+    <item
+        android:id="@+id/navViewSubJobs"
+        android:icon="@drawable/ic_submittedjobs"
+        android:title = "Submitted Jobs"/>
     <item
         android:id="@+id/navProfile"
         android:icon="@drawable/ic_profile"
