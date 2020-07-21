@@ -1,26 +1,22 @@
-package com.example.camprecapp.features.company.fragment;
+package com.example.camprecapp.features.student.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
+import com.example.camprecapp.R;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.camprecapp.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-public class CompanyOverview extends Fragment {
+public class StudentViewSubmittedJobs extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_company_overview, container, false);
+        return inflater.inflate(R.layout.activity_student_view_submitted_jobs, container, false);
     }
 
 }
