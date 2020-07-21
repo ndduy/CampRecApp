@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.features.JobApplicationDetailActivity;
 import com.example.camprecapp.features.company.CompanyAddJob;
 import com.example.camprecapp.features.company.adapter.JobApplicationAdapter;
 import com.example.camprecapp.models.JobApplication;
@@ -36,10 +37,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyViewSubApplication extends Fragment {
+public class CompanyViewSubApplication extends Fragment implements JobApplicationAdapter.OnItemClickListener{
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
 
     @Nullable
     @Override
@@ -61,6 +61,7 @@ public class CompanyViewSubApplication extends Fragment {
                 List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
                     JobApplication jobApplication = documentSnapshot.toObject(JobApplication.class);
+                    jobApplication.setJobApplication(documentSnapshot.getReference());
                     jobApplications.add(jobApplication);
                     tasks.add(jobApplication.getJobpost().get());
                     tasks.add(jobApplication.getStudent().get());
@@ -77,12 +78,20 @@ public class CompanyViewSubApplication extends Fragment {
                     else
                         jobApplications.get(i/2).setStudentData(((DocumentSnapshot) documentSnapshots.get(i)).toObject(Student.class));
                 }
-                recyclerView.setAdapter(new JobApplicationAdapter(jobApplications.toArray(new JobApplication[jobApplications.size()]), null));
+                recyclerView.setAdapter(new JobApplicationAdapter(jobApplications.toArray(new JobApplication[jobApplications.size()]), CompanyViewSubApplication.this));
             }
         });
 
         recyclerView.setAdapter(new JobApplicationAdapter(new JobApplication[0], null));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onItemClick(JobApplication item, int position) {
+        Intent i = new Intent(getActivity(), JobApplicationDetailActivity.class);
+        i.putExtra("JobApplication", item.getJobApplication().getPath());
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 }

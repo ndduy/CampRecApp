@@ -8,8 +8,11 @@ public class JobApplication {
     private DocumentReference jobpost;
     private DocumentReference student;
 
+    private @Exclude DocumentReference jobApplication;
+
     private @Exclude JobPost jobPostData;
     private @Exclude Student studentData;
+    private @Exclude Company companyData;
 
     public JobApplication(DocumentReference company, DocumentReference jobpost, DocumentReference student) {
         this.company = company;
@@ -49,6 +52,7 @@ public class JobApplication {
         return jobPostData;
     }
 
+    @Exclude
     public void setJobPostData(JobPost jobPostData) {
         this.jobPostData = jobPostData;
     }
@@ -58,7 +62,26 @@ public class JobApplication {
         return studentData;
     }
 
+    @Exclude
     public void setStudentData(Student studentData) {
         this.studentData = studentData;
+    }
+
+    @Exclude
+    public Company getCompanyData() {
+        return companyData;
+    }
+
+    @Exclude
+    public void setCompanyData(Company companyData) {
+        this.companyData = companyData;
+    }
+
+    public DocumentReference getJobApplication() {
+        return jobApplication;
+    }
+
+    public void setJobApplication(DocumentReference jobApplication) {
+        this.jobApplication = jobApplication;
     }
 }

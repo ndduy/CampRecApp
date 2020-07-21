@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         if (task.getResult().size() > 0) {
-                            DocumentReference student = task.getResult().getDocuments().get(0).getDocumentReference("company");
+                            DocumentReference student = task.getResult().getDocuments().get(0).getReference();
                             goToStudentPage(student);
                         }
                     }

@@ -14,6 +14,7 @@ import com.example.camprecapp.R;
 import com.example.camprecapp.features.company.fragment.CompanyOverview;
 import com.example.camprecapp.features.student.fragment.StudentOverview;
 import com.example.camprecapp.features.student.fragment.StudentViewJobs;
+import com.example.camprecapp.features.student.fragment.StudentViewSubmittedJobs;
 import com.example.camprecapp.features.student.fragment.ViewStudentProfile;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,6 +41,9 @@ public class StudentHome extends AppCompatActivity {
                     case R.id.navViewJobs:
                         openFragment(new StudentViewJobs());
 
+                        break;
+                    case R.id.navViewSubJobs:
+                        openFragment(new StudentViewSubmittedJobs());
                         break;
                     case R.id.navProfile:
                         openFragment(new ViewStudentProfile());

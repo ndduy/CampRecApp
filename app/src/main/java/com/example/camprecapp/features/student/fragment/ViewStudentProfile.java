@@ -1,10 +1,5 @@
 package com.example.camprecapp.features.student.fragment;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,8 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,6 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.camprecapp.R;
 import com.example.camprecapp.features.MainActivity;
@@ -33,7 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -80,11 +77,11 @@ public class ViewStudentProfile extends Fragment {
 
         //change profile picture
         storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageReference.child("profileImage/"+firebaseAuth.getCurrentUser().getUid()+"/profile.jpg");
+        StorageReference profileRef = storageReference.child("profileImage/" + firebaseAuth.getCurrentUser().getUid() + "/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
+                Picasso.get().load(uri).fit().centerInside().into(profileImage);
             }
         });
 
@@ -98,8 +95,8 @@ public class ViewStudentProfile extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1000){
-            if(resultCode == Activity.RESULT_OK){
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
                 Uri imgUri = data.getData();
                 //profileImage.setImageURI(imgUri);
 
@@ -107,16 +104,20 @@ public class ViewStudentProfile extends Fragment {
             }
         }
     }
-    void uploadImageFirebase(Uri imgUri){
+
+    void uploadImageFirebase(Uri imgUri) {
         //upload image to firebase storage
-        final StorageReference fileRef = storageReference.child("profileImage/"+firebaseAuth.getCurrentUser().getUid()+"/profile.jpg");
+        final StorageReference fileRef = storageReference.child("profileImage/" + firebaseAuth.getCurrentUser().getUid() + "/profile.jpg");
         fileRef.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(profileImage);
+                        Picasso.get().load(uri).fit().centerInside().into(profileImage);
+                        firebaseUser.updateProfile(new UserProfileChangeRequest.Builder()
+                                .setPhotoUri(uri)
+                                .build());
                     }
                 });
                 //Toast.makeText(getContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
@@ -128,6 +129,7 @@ public class ViewStudentProfile extends Fragment {
             }
         });
     }
+
     void viewProfile() {
         if (firebaseUser != null) {
 
@@ -163,7 +165,8 @@ public class ViewStudentProfile extends Fragment {
             });
         }
     }
-    void resetPassword(){
+
+    void resetPassword() {
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -201,24 +204,26 @@ public class ViewStudentProfile extends Fragment {
             }
         });
     }
-    void changeProfilePic(){
+
+    void changeProfilePic() {
         btnChangeProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //open gallery
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent,1000);
+                startActivityForResult(openGalleryIntent, 1000);
             }
         });
     }
-    void updateProfileInfo(){
+
+    void updateProfileInfo() {
         btnUpdateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), EditStudentProfile.class);
-                i.putExtra("name",txtViewName.getText().toString());
-                i.putExtra("email",txtViewEmail.getText().toString());
-                i.putExtra("phone",txtViewPhoneNo.getText().toString());
+                i.putExtra("name", txtViewName.getText().toString());
+                i.putExtra("email", txtViewEmail.getText().toString());
+                i.putExtra("phone", txtViewPhoneNo.getText().toString());
                 startActivity(i);
             }
         });
