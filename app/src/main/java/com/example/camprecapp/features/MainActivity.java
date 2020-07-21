@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
 
                                         FirebaseFirestore ff = FirebaseFirestore.getInstance();
 
-                                        ff.collection("Company").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                                                    DocumentReference company = task.getResult().getDocuments().get(0).getReference();//getDocumentReference("company");
+                                                    DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
                                                     goToCompanyPage(company);
 
                                                 }
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         if (firebaseUser != null) {
             //when user is active show the login activity
             FirebaseFirestore ff = FirebaseFirestore.getInstance();
-            ff.collection("Company").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         if (task.getResult().size() > 0) {
-                            DocumentReference student = task.getResult().getDocuments().get(0).getReference();
+                            DocumentReference student = task.getResult().getDocuments().get(0).getDocumentReference("company");
                             goToStudentPage(student);
                         }
                     }

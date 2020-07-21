@@ -44,7 +44,7 @@ public class CompanySignUp extends AppCompatActivity {
         final EditText editTextCity = findViewById(R.id.editTextComCity);
         final EditText editTextComEmail = findViewById(R.id.editTextComLogInEmail);
         company = new Company();
-        //companyAdmin = new CompanyAdmin();
+        companyAdmin = new CompanyAdmin();
         editTextCompanyName.requestFocus();
 
         //establishing connection with firebase
@@ -78,25 +78,22 @@ public class CompanySignUp extends AppCompatActivity {
                                             String companyAddress = editTextAddress.getText().toString();
                                             String companyCity = editTextCity.getText().toString();
 
-                                            company.setPhoneNumber(phoneNumber);
-                                            company.setName(companyUserName);
-                                            company.setEmail(companyEmail);
-                                            company.setuId(firebaseUser.getUid());
-                                            company.setCompanyName(companyName);
+                                            companyAdmin.setPhoneNumber(phoneNumber);
+                                            companyAdmin.setName(companyUserName);
+                                            companyAdmin.setEmail(companyEmail);
+                                            companyAdmin.setuId(firebaseUser.getUid());
                                             company.setAddress(companyAddress);
                                             company.setCity(companyCity);
-                                            /*company.setAddress(companyAddress);
-                                            company.setCity(companyCity);
-                                            company.setName(companyName);*/
+                                            company.setName(companyName);
 
                                             final FirebaseFirestore ff = FirebaseFirestore.getInstance();
-                                            ff.collection("Company").add(company);/*add(company);.addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            ff.collection("Company").add(company).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
                                                 public void onSuccess(DocumentReference documentReference) {
                                                     companyAdmin.setCompany(documentReference);
                                                     ff.collection("CompanyAdmin").add(companyAdmin);
                                                 }
-                                            });*/
+                                            });
 
                                             Toast.makeText(CompanySignUp.this, "Thank you for signing up!", Toast.LENGTH_LONG).show();
                                             startActivity(new Intent(CompanySignUp.this, CompanyHome.class));
