@@ -3,19 +3,22 @@ package com.example.camprecapp.features.student.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.camprecapp.R;
-import com.example.camprecapp.features.company.adapter.JobApplicationAdapter;
 import com.example.camprecapp.models.JobApplication;
 
-public class JobApplicationStudentAdapter extends RecyclerView.Adapter<JobApplicationStudentAdapter.ApplicantItemHolder> {
-    private JobApplication[] mDataset;
+import java.util.ArrayList;
 
-    public JobApplicationStudentAdapter(JobApplication[] mDataset, JobApplicationStudentAdapter.OnItemClickListener listener) {
+public class JobApplicationStudentAdapter extends RecyclerView.Adapter<JobApplicationStudentAdapter.ApplicantItemHolder> {
+    private ArrayList<JobApplication> mDataset;
+
+    public JobApplicationStudentAdapter(ArrayList<JobApplication> mDataset, JobApplicationStudentAdapter.OnItemClickListener listener) {
         this.mDataset = mDataset;
         this.listener = listener;
     }
@@ -30,7 +33,10 @@ public class JobApplicationStudentAdapter extends RecyclerView.Adapter<JobApplic
         TextView textViewJobName;
         TextView textViewJobID;
         TextView textViewCompanyName;
+        TextView textViewTitle;
 
+        public RelativeLayout viewBackground;
+        public LinearLayout viewForeground;
 
         public ApplicantItemHolder(View itemView) {
             super(itemView);
@@ -38,6 +44,12 @@ public class JobApplicationStudentAdapter extends RecyclerView.Adapter<JobApplic
             textViewJobName = itemView.findViewById(R.id.textViewJobName);
             textViewJobID = itemView.findViewById(R.id.textViewJobID);
             textViewCompanyName = itemView.findViewById(R.id.textViewCompanyName);
+            textViewTitle = itemView.findViewById(R.id.txtViewJobTitle);
+
+            viewBackground = itemView.findViewById(R.id.view_background);
+            viewForeground = itemView.findViewById(R.id.view_foreground);
+
+
         }
 
     }
@@ -53,11 +65,12 @@ public class JobApplicationStudentAdapter extends RecyclerView.Adapter<JobApplic
 
     @Override
     public void onBindViewHolder(JobApplicationStudentAdapter.ApplicantItemHolder holder, final int position) {
-        final JobApplication jobApplication = mDataset[position];
+        final JobApplication jobApplication = mDataset.get(position);
 
         holder.textViewJobName.setText(jobApplication.getJobPostData().getTitle());
         holder.textViewJobID.setText(jobApplication.getJobPostData().getCompanyName());
-        holder.textViewCompanyName.setText(jobApplication.getCompanyData().getName());
+        holder.textViewCompanyName.setText(jobApplication.getCompanyData().getCity());
+        holder.textViewTitle.setText(jobApplication.getCompanyData().getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,8 +82,14 @@ public class JobApplicationStudentAdapter extends RecyclerView.Adapter<JobApplic
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
-
+    public void removeItem(int position) {
+        mDataset.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position);
+    }
 }

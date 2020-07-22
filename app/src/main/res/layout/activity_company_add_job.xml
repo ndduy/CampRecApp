@@ -51,4 +51,11 @@
         android:layout_height="wrap_content"
         android:text="Add Job" />
 
+    <Button
+        android:id="@+id/btnEditJob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="Edit Job" />
+
 </LinearLayout>

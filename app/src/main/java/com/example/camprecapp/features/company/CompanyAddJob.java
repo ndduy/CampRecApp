@@ -1,21 +1,15 @@
 package com.example.camprecapp.features.company;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.camprecapp.R;
-import com.example.camprecapp.features.company.fragment.CompanyJobs;
-import com.example.camprecapp.models.AddJobModel;
 import com.example.camprecapp.models.JobPost;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,9 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
 
 public class CompanyAddJob extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
@@ -37,7 +33,7 @@ public class CompanyAddJob extends AppCompatActivity {
     private EditText editTextDescription;
     private EditText editTextSalary;
     private EditText editTextWorkLocation;
-    Button btnAddJob;
+    Button btnAddJob, btnEditJob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +43,7 @@ public class CompanyAddJob extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        FirebaseFirestore ff = FirebaseFirestore.getInstance();
-
-
+        final FirebaseFirestore ff = FirebaseFirestore.getInstance();
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
         setTitle("Add Job");
@@ -60,9 +54,30 @@ public class CompanyAddJob extends AppCompatActivity {
         editTextSalary = findViewById(R.id.editTextSalary);
         editTextWorkLocation = findViewById(R.id.editTextWorkLocation);
         btnAddJob = findViewById(R.id.btnAddJob);
+        btnEditJob = findViewById(R.id.btnEditJob);
         jobPost = new JobPost();
         editTextTitle.requestFocus();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        if (!getIntent().getStringExtra("jobpost").isEmpty()) {
+            btnAddJob.setVisibility(View.INVISIBLE);
+            btnEditJob.setVisibility(View.VISIBLE);
+
+            ff.document(getIntent().getStringExtra("jobpost")).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    jobPost = task.getResult().toObject(JobPost.class);
+                    jobPost.setJobPost(task.getResult().getReference());
+                    editTextTitle.setText(jobPost.getTitle());
+                    editTextCompanyName.setText(jobPost.getCompanyName());
+                    editTextJobType.setText(jobPost.getJobType());
+                    editTextDescription.setText(jobPost.getDescription());
+                    editTextSalary.setText(jobPost.getSalary());
+                    editTextWorkLocation.setText(jobPost.getLocation());
+                }
+            });
+        }
+
         btnAddJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +96,6 @@ public class CompanyAddJob extends AppCompatActivity {
                 jobPost.setSalary(salary);
                 jobPost.setLocation(location);
 
-                final FirebaseFirestore ff = FirebaseFirestore.getInstance();
                 ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -96,6 +110,35 @@ public class CompanyAddJob extends AppCompatActivity {
                                 }
                             });
                         }
+                    }
+                });
+
+            }
+        });
+
+        btnEditJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String title = editTextTitle.getText().toString();
+                String companyName = editTextCompanyName.getText().toString();
+                String jobType = editTextJobType.getText().toString();
+                String description = editTextDescription.getText().toString();
+                String salary = editTextSalary.getText().toString();
+                String location = editTextWorkLocation.getText().toString();
+
+                HashMap<String, Object> myObject = new HashMap<String, Object>();
+                myObject.put("title", title);
+                myObject.put("companyName", companyName);
+                myObject.put("description", description);
+                myObject.put("jobType", jobType);
+                myObject.put("location", location);
+                myObject.put("salary", salary);
+
+                ff.document(jobPost.getJobPost().getPath()).update(myObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(CompanyAddJob.this, "Job Updated!", Toast.LENGTH_LONG).show();
                     }
                 });
 

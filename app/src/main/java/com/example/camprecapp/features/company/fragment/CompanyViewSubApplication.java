@@ -91,7 +91,6 @@ public class CompanyViewSubApplication extends Fragment implements JobApplicatio
     public void onItemClick(JobApplication item, int position) {
         Intent i = new Intent(getActivity(), JobApplicationDetailActivity.class);
         i.putExtra("JobApplication", item.getJobApplication().getPath());
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
     }
 }

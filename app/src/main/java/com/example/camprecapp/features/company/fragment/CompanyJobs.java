@@ -18,7 +18,9 @@ import com.example.camprecapp.features.company.adapter.AddJobCustomAdapter;
 import com.example.camprecapp.R;
 import com.example.camprecapp.models.JobPost;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -46,12 +48,22 @@ public class CompanyJobs extends Fragment {
                 .orderBy("salary", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<JobPost> options = new FirestoreRecyclerOptions.Builder<JobPost>()
-                .setQuery(query, JobPost.class)
+                .setQuery(query, new SnapshotParser<JobPost>() {
+                    @NonNull
+                    @Override
+                    public JobPost parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        JobPost post = snapshot.toObject(JobPost.class);
+                        post.setJobPost(snapshot.getReference());
+                        return post;
+                    }
+                })
                 .build();
         adapter = new AddJobCustomAdapter(options, new AddJobCustomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(JobPost item, int position) {
-                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), CompanyAddJob.class);
+                i.putExtra("jobpost", item.getJobPost().getPath());
+                startActivity(i);
             }
         });
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
