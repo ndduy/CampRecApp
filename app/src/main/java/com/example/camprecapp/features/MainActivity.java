@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        DocumentReference company = task.getResult().getDocuments().get(0).getReference();
+                        DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
                         goToCompanyPage(company);
                     }
                 }

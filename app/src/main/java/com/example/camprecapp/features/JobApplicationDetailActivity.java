@@ -3,8 +3,6 @@ package com.example.camprecapp.features;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,8 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.camprecapp.R;
 import com.example.camprecapp.models.Comment;
+import com.example.camprecapp.models.Company;
+import com.example.camprecapp.models.JobApplication;
+import com.example.camprecapp.models.JobPost;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +42,7 @@ import java.util.Locale;
 
 public class JobApplicationDetailActivity extends AppCompatActivity {
 
-    ImageView imgPost, imgUserPost, imgCurrentUser;
+    ImageView imgCurrentUser;
     TextView txtPostDesc, txtPostDateName, txtPostTitle;
     EditText editTextComment;
     Button btnAddComment;
@@ -48,23 +54,15 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
     CommentAdapter commentAdapter;
     List<Comment> listComment;
     static String COMMENT_KEY = "Comment";
-
+    JobApplication jobApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_application_detail);
 
-
-        // let's set the statue bar to transparent
-        Window w = getWindow();
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getSupportActionBar().hide();
-
         // ini Views
         RvComment = findViewById(R.id.rv_comment);
-        imgPost = findViewById(R.id.post_detail_img);
-        imgUserPost = findViewById(R.id.post_detail_user_img);
         imgCurrentUser = findViewById(R.id.post_detail_currentuser_img);
 
         txtPostTitle = findViewById(R.id.post_detail_title);
@@ -113,25 +111,6 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
         });
 
 
-        // now we need to bind all data into those views
-        // firt we need to get post data
-        // we need to send post detail data to this activity first ...
-        // now we can get post data
-
-        String postImage = getIntent().getExtras().getString("postImage");
-        Glide.with(this).load(postImage).into(imgPost);
-
-        String postTitle = getIntent().getExtras().getString("title");
-        txtPostTitle.setText(postTitle);
-
-        String userpostImage = getIntent().getExtras().getString("userPhoto");
-        Glide.with(this).load(userpostImage).into(imgUserPost);
-
-        String postDescription = getIntent().getExtras().getString("description");
-        txtPostDesc.setText(postDescription);
-
-        // setcomment user image
-
         Glide.with(this).load(firebaseUser.getPhotoUrl()).into(imgCurrentUser);
         // get post id
         PostKey = getIntent().getExtras().getString("JobApplication");
@@ -139,11 +118,36 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
         String date = timestampToString(getIntent().getExtras().getLong("postDate"));
         txtPostDateName.setText(date);
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.document(PostKey).get().continueWithTask(new Continuation<DocumentSnapshot, Task<List<DocumentSnapshot>>>() {
+            @Override
+            public Task<List<DocumentSnapshot>> then(@NonNull Task<DocumentSnapshot> task) throws Exception {
+                List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+                jobApplication = task.getResult().toObject(JobApplication.class);
+                tasks.add(jobApplication.getJobpost().get());
+                tasks.add(jobApplication.getCompany().get());
+                Task combinedTask = Tasks.whenAllSuccess(tasks);
+                return combinedTask;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<List<DocumentSnapshot>>() {
+            @Override
+            public void onSuccess(List<DocumentSnapshot> documentSnapshots) {
+                for (int i = 0; i < documentSnapshots.size(); i++) {
+                    if (i % 2 == 0)
+                        jobApplication.setJobPostData(documentSnapshots.get(i).toObject(JobPost.class));
+                    else
+                        jobApplication.setCompanyData(documentSnapshots.get(i).toObject(Company.class));
+                }
+
+                txtPostTitle.setText(jobApplication.getJobPostData().getTitle());
+                txtPostDesc.setText(jobApplication.getJobPostData().getDescription());
+                String date = timestampToString(getIntent().getExtras().getLong("postDate"));
+                txtPostDateName.setText(date + " by " + jobApplication.getJobPostData().getCompanyName());
+            }
+        });
 
         // ini Recyclerview Comment
         iniRvComment();
-
-
     }
 
     private void iniRvComment() {

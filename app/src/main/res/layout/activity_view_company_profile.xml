@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".features.company.fragment.ViewCompanyProfile">
 
+    <ImageView
+        android:id="@+id/imgViewProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txtViewCompanyName"
         android:layout_width="wrap_content"
@@ -28,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imgViewProfile" />
 
     <TextView
         android:id="@+id/txtViewCompanyUserName"
@@ -39,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imgViewProfile"  />
 
     <TextView
         android:id="@+id/txtViewEmail"
@@ -150,6 +160,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtViewAddress" />
 
+
+    <Button
+        android:id="@+id/btnUpdateProfilePic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:text="Update Profile Picture"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewAddress" />
+
     <Button
         android:id="@+id/btnLogOut"
         android:layout_width="wrap_content"
@@ -159,7 +182,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.452"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewCity" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUpdateProfilePic" />
 
 
 
