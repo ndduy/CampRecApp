@@ -30,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 public class StudentJobApplication extends AppCompatActivity {
@@ -76,7 +77,7 @@ public class StudentJobApplication extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         JobPost jobPostData = task.getResult().toObject(JobPost.class);
-                        JobApplication jobApplication = new JobApplication(jobPostData.getCompany(), jobpost, student);
+                        JobApplication jobApplication = new JobApplication(jobPostData.getCompany(), jobpost, student, new Date());
                         ff.collection("JobApplication").add(jobApplication).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
