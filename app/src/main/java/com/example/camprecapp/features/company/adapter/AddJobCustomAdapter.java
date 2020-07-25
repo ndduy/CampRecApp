@@ -3,29 +3,31 @@ package com.example.camprecapp.features.company.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.models.JobApplication;
 import com.example.camprecapp.models.JobPost;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJobCustomAdapter.ItemHolder> {
+import java.util.ArrayList;
 
+public class AddJobCustomAdapter extends  RecyclerView.Adapter<AddJobCustomAdapter.ItemHolder> implements Filterable {
 
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     * @param listener
-     */
-    public AddJobCustomAdapter(@NonNull FirestoreRecyclerOptions<JobPost> options, OnItemClickListener listener) {
-        super(options);
+    private ArrayList<JobPost> mDataset;
+    private ArrayList<JobPost> mStringFilterList;
+    ValueFilter valueFilter;
+
+    public AddJobCustomAdapter(ArrayList<JobPost> mDataset, AddJobCustomAdapter.OnItemClickListener listener) {
+        this.mDataset = mDataset;
         this.listener = listener;
+        this.mStringFilterList = mDataset;
     }
 
     public interface OnItemClickListener {
@@ -57,9 +59,8 @@ public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJo
 
     }
 
-    @NonNull
     @Override
-    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.company_job_list_layout, parent, false);
 
@@ -67,7 +68,9 @@ public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJo
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ItemHolder holder, final int position, @NonNull final JobPost jobPost) {
+    public void onBindViewHolder(ItemHolder holder, final int position) {
+        final JobPost jobPost = mDataset.get(position);
+
         holder.textViewTitle.setText(jobPost.getTitle());
         holder.txtViewCompanyName.setText(jobPost.getCompanyName());
         holder.txtViewJobType.setText(jobPost.getJobType());
@@ -83,4 +86,49 @@ public class AddJobCustomAdapter extends FirestoreRecyclerAdapter<JobPost, AddJo
         });
 
     }
+
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (valueFilter == null) {
+            valueFilter = new ValueFilter();
+        }
+        return valueFilter;
+    }
+
+    private class ValueFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+
+            if (constraint != null && constraint.length() > 0) {
+                ArrayList<JobPost> filterList = new ArrayList<>();
+                for (int i = 0; i < mStringFilterList.size(); i++) {
+                    if ((mStringFilterList.get(i).getTitle().toUpperCase()).contains(constraint.toString().toUpperCase())) {
+                        filterList.add(mStringFilterList.get(i));
+                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
+            } else {
+                results.count = mStringFilterList.size();
+                results.values = mStringFilterList;
+            }
+            return results;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+            mDataset = (ArrayList<JobPost>) results.values;
+            notifyDataSetChanged();
+        }
+
+    }
+
 }
