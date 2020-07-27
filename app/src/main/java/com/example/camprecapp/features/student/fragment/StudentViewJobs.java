@@ -68,7 +68,7 @@ public class StudentViewJobs extends Fragment {
                     @Override
                     public void onItemClick(JobPost item, int position) {
                         Intent i = new Intent(getActivity(), StudentJobApplication.class);
-                        i.putExtra("jobpost", item.getDocumentId().getPath());
+                        i.putExtra("jobpost", item.getJobPost().getPath());
                         i.putExtra("student", getActivity().getIntent().getStringExtra("student"));
                         startActivity(i);
                     }

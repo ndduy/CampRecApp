@@ -20,13 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.camprecapp.R;
 import com.example.camprecapp.features.company.CompanyAddJob;
 import com.example.camprecapp.features.company.adapter.AddJobCustomAdapter;
-import com.example.camprecapp.features.student.StudentJobApplication;
 import com.example.camprecapp.models.JobPost;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -44,8 +43,14 @@ public class CompanyJobs extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        FloatingActionButton buttonAddJob = getView().findViewById(R.id.floating_action_button);
+        buttonAddJob.setOnClickListener(new View.OnClickListener() {
 
-
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CompanyAddJob.class));
+            }
+        });
         adapter = new AddJobCustomAdapter(new ArrayList<JobPost>(), null);
         recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -53,8 +58,12 @@ public class CompanyJobs extends Fragment {
         recyclerView.setAdapter(adapter);
         setHasOptionsMenu(true);
 
-        FirebaseFirestore.getInstance().collection("JobPost")
-                .orderBy("salary", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        String company = getActivity().getIntent().getStringExtra("company");
+
+        FirebaseFirestore ff = FirebaseFirestore.getInstance();
+        ff.collection("JobPost")
+                .whereEqualTo("company", ff.document(company))
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {

@@ -1,6 +1,7 @@
 package com.example.camprecapp.features.company;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +48,7 @@ public class CompanyAddJob extends AppCompatActivity {
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
         setTitle("Add Job");
+
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextCompanyName = findViewById(R.id.editTextJobCompanyName);
         editTextJobType = findViewById(R.id.editTextJobType);
@@ -59,7 +61,7 @@ public class CompanyAddJob extends AppCompatActivity {
         editTextTitle.requestFocus();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (!getIntent().getStringExtra("jobpost").isEmpty()) {
+        if (getIntent().getStringExtra("jobpost") != null) {
             btnAddJob.setVisibility(View.INVISIBLE);
             btnEditJob.setVisibility(View.VISIBLE);
 
@@ -146,4 +148,11 @@ public class CompanyAddJob extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

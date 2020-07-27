@@ -39,6 +39,7 @@ public class StudentJobApplication extends AppCompatActivity {
     private ImageView imageView;
 
     private Uri filePath;
+    private Uri uploadedPath;
 
     private final int PICK_IMAGE_REQUEST = 71;
     final static int PICK_PDF_CODE = 2342;
@@ -77,6 +78,9 @@ public class StudentJobApplication extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         JobPost jobPostData = task.getResult().toObject(JobPost.class);
                         JobApplication jobApplication = new JobApplication(jobPostData.getCompany(), jobpost, student);
+                        if (uploadedPath != null) {
+                            jobApplication.setDocumentUrl(uploadedPath.toString());
+                        }
                         ff.collection("JobApplication").add(jobApplication).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
@@ -138,12 +142,12 @@ public class StudentJobApplication extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        } else if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             //if a file is selected
             if (data.getData() != null) {
                 //uploading the file
                 filePath = data.getData();
-            }else{
+            } else {
                 Toast.makeText(this, "No file chosen", Toast.LENGTH_SHORT).show();
             }
         }
@@ -156,12 +160,18 @@ public class StudentJobApplication extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            final StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
+                            ref.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    uploadedPath = task.getResult();
+                                }
+                            });
                             Toast.makeText(StudentJobApplication.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })

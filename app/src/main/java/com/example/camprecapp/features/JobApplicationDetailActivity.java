@@ -1,5 +1,7 @@
 package com.example.camprecapp.features;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -55,6 +57,7 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
     List<Comment> listComment;
     static String COMMENT_KEY = "Comment";
     JobApplication jobApplication;
+    Button openAttachment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,17 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        openAttachment = findViewById(R.id.openAttachment);
 
+        openAttachment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = jobApplication.getDocumentUrl();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
         // add Comment button click listner
 
@@ -143,8 +156,17 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
                 txtPostDesc.setText(jobApplication.getJobPostData().getDescription());
                 String date = timestampToString(getIntent().getExtras().getLong("postDate"));
                 txtPostDateName.setText(date + " by " + jobApplication.getJobPostData().getCompanyName());
+
+                if (jobApplication.getDocumentUrl() == null){
+                    openAttachment.setVisibility(View.GONE);
+                }else{
+                    openAttachment.setVisibility(View.VISIBLE);
+                }
             }
         });
+
+
+
 
         // ini Recyclerview Comment
         iniRvComment();

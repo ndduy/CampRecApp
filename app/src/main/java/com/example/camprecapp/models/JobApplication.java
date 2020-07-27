@@ -8,6 +8,8 @@ public class JobApplication {
     private DocumentReference jobpost;
     private DocumentReference student;
 
+    private String documentUrl;
+
     private @Exclude DocumentReference jobApplication;
 
     private @Exclude JobPost jobPostData;
@@ -21,6 +23,14 @@ public class JobApplication {
     }
 
     public JobApplication() {
+    }
+
+    public String getDocumentUrl() {
+        return documentUrl;
+    }
+
+    public void setDocumentUrl(String documentUrl) {
+        this.documentUrl = documentUrl;
     }
 
     public DocumentReference getCompany() {

@@ -65,6 +65,17 @@
             app:layout_constraintTop_toBottomOf="@+id/view"
             tools:text="18 jan 2018 | by Arun Larrson " />
 
+        <Button
+            android:id="@+id/openAttachment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Open Attachment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_detail_date_name"/>
+
         <TextView
 
             android:id="@+id/post_detail_desc"
@@ -80,7 +91,7 @@
             android:textColor="#373737"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_detail_date_name" />
+            app:layout_constraintTop_toBottomOf="@+id/openAttachment" />
 
         <ImageView
             android:id="@+id/post_detail_currentuser_img"
