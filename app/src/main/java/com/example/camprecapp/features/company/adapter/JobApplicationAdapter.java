@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -40,12 +41,13 @@ public class JobApplicationAdapter extends RecyclerView.Adapter<JobApplicationAd
         TextView textViewJobName;
         TextView textViewJobID;
         TextView textViewApplicantName;
-
+        TextView txtViewJobTitle;
 
         public ApplicantItemHolder(View itemView) {
             super(itemView);
 
-            textViewJobName = itemView.findViewById(R.id.textViewJobName);
+            textViewJobName = itemView.findViewById(R.id.txtViewJobTitle);
+            txtViewJobTitle = itemView.findViewById(R.id.textViewJobName);
             textViewJobID = itemView.findViewById(R.id.textViewJobID);
             textViewApplicantName = itemView.findViewById(R.id.textViewApplicantName);
         }
@@ -67,8 +69,12 @@ public class JobApplicationAdapter extends RecyclerView.Adapter<JobApplicationAd
 
         holder.textViewJobName.setText(jobApplication.getJobPostData().getTitle());
         holder.textViewJobID.setText(jobApplication.getJobPostData().getCompanyName());
-        holder.textViewApplicantName.setText(jobApplication.getStudentData().getName());
-
+        holder.textViewApplicantName.setText("Applicant name: " +jobApplication.getStudentData().getName());
+        if (jobApplication.getAppliedDate() != null) {
+            holder.txtViewJobTitle.setText((new SimpleDateFormat("yyyyy-mm-dd hh:mm:ss")).format(jobApplication.getAppliedDate()));
+        } else{
+            holder.txtViewJobTitle.setText("");
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
