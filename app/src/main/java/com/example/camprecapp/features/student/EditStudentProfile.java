@@ -1,6 +1,7 @@
 package com.example.camprecapp.features.student;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -21,19 +22,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditStudentProfile extends AppCompatActivity {
-public static final String TAG = "TAG";
-EditText profileName, profileEmail, profilePhone;
-FirebaseAuth fAuth;
-FirebaseFirestore fStore;
-FirebaseUser user;
-Button btnSave;
+    public static final String TAG = "TAG";
+    EditText profileName, profileEmail, profilePhone;
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    FirebaseUser user;
+    Button btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,8 @@ Button btnSave;
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(profileName.getText().toString().isEmpty() || profileEmail.getText().toString().isEmpty() ||
-                profilePhone.getText().toString().isEmpty()){
+                if (profileName.getText().toString().isEmpty() || profileEmail.getText().toString().isEmpty() ||
+                        profilePhone.getText().toString().isEmpty()) {
                     Toast.makeText(EditStudentProfile.this, "One or more fields are empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -65,21 +68,38 @@ Button btnSave;
                 user.updateEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        DocumentReference docRef = fStore.collection("Student").document(user.getUid());
-                        Map<String, Object> edited = new HashMap<>();
-                        edited.put("email",email);
-                        edited.put("name",profileName.getText().toString());
-                        edited.put("phoneNumber",profilePhone.getText().toString());
-                        docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(EditStudentProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), ViewStudentProfile.class));
-                                finish();
-                            }
-                        });
+                        fStore.collection("Student").whereEqualTo("uId", user.getUid()).get().addOnSuccessListener(
+                                new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        DocumentReference docRef = queryDocumentSnapshots.getDocuments().get(0).getReference();
+                                        Map<String, Object> edited = new HashMap<>();
+                                        edited.put("email", email);
+                                        edited.put("name", profileName.getText().toString());
+                                        edited.put("phoneNumber", profilePhone.getText().toString());
+                                        //Log.i("Inserted","Error");
+                                        docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(EditStudentProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                                                //startActivity(new Intent(getApplicationContext(), ViewStudentProfile.class));
+                                                setResult(RESULT_OK);
+                                                finish();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(EditStudentProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        ;
 
-                        Toast.makeText(EditStudentProfile.this, "Email is changed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                        );
+
+                        //Toast.makeText(EditStudentProfile.this, "Email is changed", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -93,7 +113,7 @@ Button btnSave;
         profileEmail.setText(email);
         profilePhone.setText(phone);
 
-        Log.d(TAG,"onCreate: " + name + " "+ email + " " + phone);
+        //Log.d(TAG,"onCreate: " + name + " "+ email + " " + phone);
 
     }
 }

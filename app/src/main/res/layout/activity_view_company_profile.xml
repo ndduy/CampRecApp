@@ -6,126 +6,127 @@
     android:layout_height="match_parent"
     tools:context=".features.company.fragment.ViewCompanyProfile">
 
+    <Button
+        android:id="@+id/btnUpdateProfilePic"
+        android:layout_width="408dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center|center_horizontal"
+        android:text="Update Profile Picture"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewCity" />
+
+    <Button
+        android:id="@+id/btnResetPassword2"
+        android:layout_width="408dp"
+        android:layout_height="38dp"
+        android:text="Reset Password"
+        android:gravity="center|center_horizontal"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUpdateProfileCom" />
+
     <ImageView
         android:id="@+id/imgViewProfile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:gravity="center"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txtViewCompanyName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="40dp"
-        android:text="Company Name:"
-        android:textSize="18sp"
+    <ImageView
+        android:id="@+id/companyName"
+        android:layout_width="22dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewHello2" />
-
-    <TextView
-        android:id="@+id/txtViewHello2"
-        android:layout_width="75dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="44dp"
-        android:text="Hello,"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgViewProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/txtViewCompanyUserName"
+        app:srcCompat="@drawable/ic_companyname" />
 
     <TextView
         android:id="@+id/txtViewCompanyUserName"
-        android:layout_width="202dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="44dp"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.74"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgViewProfile"  />
-
-    <TextView
-        android:id="@+id/txtViewEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:text="Email:"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewCompanyName" />
+        app:layout_constraintTop_toBottomOf="@+id/imgViewProfile" />
 
-    <TextView
-        android:id="@+id/txtViewComPhoneNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:text="Phone Number:"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogOut"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <ImageView
+        android:id="@+id/imgEmail"
+        android:layout_width="22dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewEmail"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/companyName"
+        app:srcCompat="@drawable/ic_email" />
 
-    <TextView
-        android:id="@+id/txtViewComAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:text="Address:"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogOut"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <ImageView
+        android:id="@+id/imgPhone"
+        android:layout_width="22dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewComPhoneNo"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imgEmail"
+        app:srcCompat="@drawable/ic_phone" />
 
-    <TextView
-        android:id="@+id/txtViewComCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:text="City:"
-        android:textSize="18sp"
+    <ImageView
+        android:id="@+id/companyAddress"
+        android:layout_width="22dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewComAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/imgPhone"
+        app:srcCompat="@drawable/ic_address" />
+
+
+    <ImageView
+        android:id="@+id/companyCity"
+        android:layout_width="22dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/companyAddress"
+        app:srcCompat="@drawable/ic_city" />
 
     <TextView
         android:id="@+id/txtViewComName"
-        android:layout_width="197dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="38dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogOut"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center|center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.897"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewCompanyUserName"
-        app:layout_constraintVertical_bias="0.06" />
+        app:layout_constraintTop_toBottomOf="@+id/txtViewCompanyUserName" />
 
     <TextView
         android:id="@+id/txtViewComEmail"
-        android:layout_width="257dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="6dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:gravity="center|center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.844"
         app:layout_constraintStart_toStartOf="parent"
@@ -133,9 +134,10 @@
 
     <TextView
         android:id="@+id/txtViewComPhone"
-        android:layout_width="219dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:gravity="center|center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,9 +145,10 @@
 
     <TextView
         android:id="@+id/txtViewAddress"
-        android:layout_width="253dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:gravity="center|center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,36 +157,38 @@
 
     <TextView
         android:id="@+id/txtViewCity"
-        android:layout_width="215dp"
-        android:layout_height="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtViewAddress" />
-
-
-    <Button
-        android:id="@+id/btnUpdateProfilePic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:text="Update Profile Picture"
-        android:textSize="14sp"
+        android:layout_marginTop="11dp"
+        android:gravity="center|center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtViewAddress" />
 
+
     <Button
-        android:id="@+id/btnLogOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log Out"
-        android:textSize="18sp"
+        android:id="@+id/btnUpdateProfileCom"
+        android:layout_width="408dp"
+        android:layout_height="38dp"
+        android:gravity="center|center_horizontal"
+        android:text="Update Profile"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.452"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnUpdateProfilePic" />
 
+    <Button
+        android:id="@+id/btnLogOut"
+        android:layout_width="408dp"
+        android:layout_height="38dp"
+        android:gravity="center|center_horizontal"
+        android:text="Log Out"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnResetPassword2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

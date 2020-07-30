@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.features.company.fragment.CompanyOverview;
 import com.example.camprecapp.features.student.StudentHome;
 import com.example.camprecapp.features.student.StudentSignUp;
 import com.example.camprecapp.features.company.CompanyHome;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         activeUser();
 
     }
+
     void speak() {
         //intent to show speech to text dialog
         intentRecognizer = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -79,10 +81,11 @@ public class MainActivity extends AppCompatActivity {
         //start intent
         try {
             startActivityForResult(intentRecognizer, REQUEST_CODE_SPEECH_INPUT);
-        }catch (Exception e){
-            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
     //receive voice input and handle it
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

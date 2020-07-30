@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.camprecapp.R;
 import com.example.camprecapp.features.JobApplicationDetailActivity;
+import com.example.camprecapp.features.VerticalSpace;
 import com.example.camprecapp.features.student.adapter.JobApplicationStudentAdapter;
 import com.example.camprecapp.features.student.adapter.RecyclerItemTouchHelper;
 import com.example.camprecapp.models.Company;
@@ -81,6 +82,8 @@ public class StudentViewSubmittedJobs extends Fragment implements JobApplication
 
         recyclerView.setAdapter(new JobApplicationStudentAdapter(new ArrayList<JobApplication>(), null));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new VerticalSpace(20));
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -104,7 +107,7 @@ public class StudentViewSubmittedJobs extends Fragment implements JobApplication
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseFirestore ff = FirebaseFirestore.getInstance();
                 ff.document(jobApplications.get(position).getJobApplication().getPath()).delete();
-                ((JobApplicationStudentAdapter)recyclerView.getAdapter()).removeItem(position);
+                ((JobApplicationStudentAdapter) recyclerView.getAdapter()).removeItem(position);
             }
         });
         builder.setNegativeButton("Cancel", null);

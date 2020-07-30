@@ -1,4 +1,4 @@
-package com.example.camprecapp.features.company;
+package com.example.camprecapp.features;
 
 import android.graphics.Rect;
 import android.view.View;

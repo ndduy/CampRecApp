@@ -18,7 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import java.util.ArrayList;
 
-public class AddJobCustomAdapter extends  RecyclerView.Adapter<AddJobCustomAdapter.ItemHolder> implements Filterable {
+public class AddJobCustomAdapter extends RecyclerView.Adapter<AddJobCustomAdapter.ItemHolder> implements Filterable {
 
     private ArrayList<JobPost> mDataset;
     private ArrayList<JobPost> mStringFilterList;

@@ -11,8 +11,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchorGravity="center"
-        >
+        android:background="@color/description"
+        app:layout_anchorGravity="center">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -25,6 +25,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="68dp"
+        app:backgroundTint="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add" />

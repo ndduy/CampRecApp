@@ -8,11 +8,12 @@ public class AddJobModel {
     private String location;
     private String jobType;
 
-    public AddJobModel(){
+    public AddJobModel() {
 
     }
+
     public AddJobModel(String title, String description, String companyName, String salary,
-                       String location, String jobType){
+                       String location, String jobType) {
         this.title = title;
         this.description = description;
         this.companyName = companyName;
@@ -20,6 +21,7 @@ public class AddJobModel {
         this.location = location;
         this.jobType = jobType;
     }
+
     public String getTitle() {
         return title;
     }

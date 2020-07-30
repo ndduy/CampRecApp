@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".features.company.EditCompanyProfile"></activity>
         <activity android:name=".features.student.EditStudentProfile" />
         <activity
             android:name=".features.company.CompanyAddJob"
@@ -25,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.JobApplicationDetailActivity"></activity>
+        <activity android:name=".features.JobApplicationDetailActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

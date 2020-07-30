@@ -1,7 +1,10 @@
 package com.example.camprecapp.features.company.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.features.VerticalSpace;
 import com.example.camprecapp.features.company.CompanyAddJob;
 import com.example.camprecapp.features.company.adapter.AddJobCustomAdapter;
 import com.example.camprecapp.models.JobPost;
@@ -48,42 +52,19 @@ public class CompanyJobs extends Fragment {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CompanyAddJob.class));
+                Intent i = new Intent(getActivity(), CompanyAddJob.class);
+                startActivityForResult(i, 1001);
             }
         });
         adapter = new AddJobCustomAdapter(new ArrayList<JobPost>(), null);
         recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new VerticalSpace(20));
         recyclerView.setAdapter(adapter);
         setHasOptionsMenu(true);
 
-        String company = getActivity().getIntent().getStringExtra("company");
-
-        FirebaseFirestore ff = FirebaseFirestore.getInstance();
-        ff.collection("JobPost")
-                .whereEqualTo("company", ff.document(company))
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
-                    JobPost jobPost = documentSnapshot.toObject(JobPost.class);
-                    jobPost.setJobPost(documentSnapshot.getReference());
-                    jobPosts.add(jobPost);
-                }
-                adapter = new AddJobCustomAdapter(jobPosts, new AddJobCustomAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(JobPost item, int position) {
-                        Intent i = new Intent(getActivity(), CompanyAddJob.class);
-                        i.putExtra("jobpost", item.getJobPost().getPath());
-                        startActivity(i);
-                    }
-                });
-                recyclerView.setAdapter(adapter);
-
-                adapter.notifyDataSetChanged();
-            }
-        });
+        JobPost();
 
 
         super.onViewCreated(view, savedInstanceState);
@@ -113,5 +94,43 @@ public class CompanyJobs extends Fragment {
         return;
     }
 
+    void JobPost() {
+        String company = getActivity().getIntent().getStringExtra("company");
 
+        FirebaseFirestore ff = FirebaseFirestore.getInstance();
+        ff.collection("JobPost")
+                .whereEqualTo("company", ff.document(company))
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //Log.i("JobPosts", "count = " + task.getResult().getDocuments().size());
+                for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                    JobPost jobPost = documentSnapshot.toObject(JobPost.class);
+                    jobPost.setJobPost(documentSnapshot.getReference());
+                    jobPosts.add(jobPost);
+                }
+                adapter = new AddJobCustomAdapter(jobPosts, new AddJobCustomAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(JobPost item, int position) {
+                        Intent i = new Intent(getActivity(), CompanyAddJob.class);
+                        i.putExtra("jobpost", item.getJobPost().getPath());
+                        startActivity(i);
+                    }
+                });
+                recyclerView.setAdapter(adapter);
+
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001) {
+            if (resultCode == Activity.RESULT_OK) {
+                JobPost();
+            }
+        }
+    }
 }

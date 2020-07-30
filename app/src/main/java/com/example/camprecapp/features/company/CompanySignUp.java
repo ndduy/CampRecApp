@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.camprecapp.R;
+import com.example.camprecapp.features.MainActivity;
 import com.example.camprecapp.models.Company;
 import com.example.camprecapp.models.CompanyAdmin;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,7 +51,7 @@ public class CompanySignUp extends AppCompatActivity {
         //establishing connection with firebase
         firebaseAuth = FirebaseAuth.getInstance();
 
-        btnSignUp.setOnClickListener(new View.OnClickListener(){
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -89,14 +90,18 @@ public class CompanySignUp extends AppCompatActivity {
                                             final FirebaseFirestore ff = FirebaseFirestore.getInstance();
                                             ff.collection("Company").add(company).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
-                                                public void onSuccess(DocumentReference documentReference) {
+                                                public void onSuccess(final DocumentReference documentReference) {
                                                     companyAdmin.setCompany(documentReference);
-                                                    ff.collection("CompanyAdmin").add(companyAdmin);
+                                                    ff.collection("CompanyAdmin").add(companyAdmin).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                            Toast.makeText(CompanySignUp.this, "Thank you for signing up!", Toast.LENGTH_LONG).show();
+                                                            goToCompanyPage(documentReference);
+                                                        }
+                                                    });
                                                 }
                                             });
 
-                                            Toast.makeText(CompanySignUp.this, "Thank you for signing up!", Toast.LENGTH_LONG).show();
-                                            startActivity(new Intent(CompanySignUp.this, CompanyHome.class));
                                         } else {
                                             Toast.makeText(CompanySignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                         }
@@ -104,11 +109,18 @@ public class CompanySignUp extends AppCompatActivity {
                                 });
 
                     }
-                }catch (Exception ex) {
+                } catch (Exception ex) {
                     Toast.makeText(CompanySignUp.this, "The fields must not be empty", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
+    }
+
+    void goToCompanyPage(DocumentReference company) {
+        Intent i = new Intent(this, CompanyHome.class);
+        i.putExtra("company", company.getPath());
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 }

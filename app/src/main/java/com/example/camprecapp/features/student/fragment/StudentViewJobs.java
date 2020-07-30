@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,21 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.camprecapp.R;
 import com.example.camprecapp.features.company.adapter.AddJobCustomAdapter;
+import com.example.camprecapp.features.VerticalSpace;
 import com.example.camprecapp.features.student.StudentJobApplication;
-import com.example.camprecapp.models.JobApplication;
 import com.example.camprecapp.models.JobPost;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StudentViewJobs extends Fragment {
     AddJobCustomAdapter adapter;
@@ -52,6 +49,7 @@ public class StudentViewJobs extends Fragment {
         recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new VerticalSpace(20));
         recyclerView.setAdapter(adapter);
         setHasOptionsMenu(true);
 
@@ -77,7 +75,6 @@ public class StudentViewJobs extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-
 
 
         super.onViewCreated(view, savedInstanceState);

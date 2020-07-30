@@ -69,10 +69,10 @@ public class JobApplicationAdapter extends RecyclerView.Adapter<JobApplicationAd
 
         holder.textViewJobName.setText(jobApplication.getJobPostData().getTitle());
         holder.textViewJobID.setText(jobApplication.getJobPostData().getCompanyName());
-        holder.textViewApplicantName.setText("Applicant name: " +jobApplication.getStudentData().getName());
+        holder.textViewApplicantName.setText("Applicant name: " + jobApplication.getStudentData().getName());
         if (jobApplication.getAppliedDate() != null) {
-            holder.txtViewJobTitle.setText((new SimpleDateFormat("yyyyy-mm-dd hh:mm:ss")).format(jobApplication.getAppliedDate()));
-        } else{
+            holder.txtViewJobTitle.setText((new SimpleDateFormat("MM/dd/yy hh:mm:ss")).format(jobApplication.getAppliedDate()));
+        } else {
             holder.txtViewJobTitle.setText("");
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {

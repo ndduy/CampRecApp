@@ -35,19 +35,16 @@ import java.util.UUID;
 
 public class StudentJobApplication extends AppCompatActivity {
 
-    Button btnApplyJob;
-    private Button btnChoose, btnUpload, btnChoosePDF;
-    private ImageView imageView;
-
-    private Uri filePath;
-    private Uri uploadedPath;
-
-    private final int PICK_IMAGE_REQUEST = 71;
     final static int PICK_PDF_CODE = 2342;
-
+    private final int PICK_IMAGE_REQUEST = 71;
+    Button btnApplyJob;
     //Firebase
     FirebaseStorage storage;
     StorageReference storageReference;
+    private Button btnChoose, btnUpload, btnChoosePDF;
+    private ImageView imageView;
+    private Uri filePath;
+    private Uri uploadedPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -83,38 +83,47 @@ public class CompanyAddJob extends AppCompatActivity {
         btnAddJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
 
-                String title = editTextTitle.getText().toString();
-                String companyName = editTextCompanyName.getText().toString();
-                String jobType = editTextJobType.getText().toString();
-                String description = editTextDescription.getText().toString();
-                String salary = editTextSalary.getText().toString();
-                String location = editTextWorkLocation.getText().toString();
+                    String title = editTextTitle.getText().toString();
+                    String companyName = editTextCompanyName.getText().toString();
+                    String jobType = editTextJobType.getText().toString();
+                    String description = editTextDescription.getText().toString();
+                    String salary = editTextSalary.getText().toString();
+                    String location = editTextWorkLocation.getText().toString();
 
-                jobPost.setTitle(title);
-                jobPost.setCompanyName(companyName);
-                jobPost.setJobType(jobType);
-                jobPost.setDescription(description);
-                jobPost.setSalary(salary);
-                jobPost.setLocation(location);
+                    jobPost.setTitle(title);
+                    jobPost.setCompanyName(companyName);
+                    jobPost.setJobType(jobType);
+                    jobPost.setDescription(description);
+                    jobPost.setSalary(salary);
+                    jobPost.setLocation(location);
+                    if (!title.isEmpty() && !companyName.isEmpty() && !jobType.isEmpty() && !description.isEmpty() &&
+                            !salary.isEmpty() && !location.isEmpty()) {
 
-                ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
-                            jobPost.setCompany(company);
-                            ff.collection("JobPost").add(jobPost).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Toast.makeText(CompanyAddJob.this, "Job Added!", Toast.LENGTH_LONG).show();
-                                    finish();
+                        ff.collection("CompanyAdmin").whereEqualTo("uId", firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                    DocumentReference company = task.getResult().getDocuments().get(0).getDocumentReference("company");
+                                    jobPost.setCompany(company);
+                                    ff.collection("JobPost").add(jobPost).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Toast.makeText(CompanyAddJob.this, "Job Added!", Toast.LENGTH_LONG).show();
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        }
+                                    });
                                 }
-                            });
-                        }
+                            }
+                        });
+                    } else {
+                        Toast.makeText(CompanyAddJob.this, "The fields must not be empty", Toast.LENGTH_LONG).show();
                     }
-                });
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -141,6 +150,8 @@ public class CompanyAddJob extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(CompanyAddJob.this, "Job Updated!", Toast.LENGTH_LONG).show();
+                        //setResult(RESULT_OK);
+                        finish();
                     }
                 });
 

@@ -6,16 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".features.company.fragment.CompanyViewSubApplication">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="this is company overview"
-        android:textSize="18sp"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="815dp"
+        android:layout_height="350dp"
+        android:src="@drawable/recruitment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintTop_toBottomOf="@+id/txtViewTitle2"
+        app:layout_constraintVertical_bias="0.246" />
+
+    <TextView
+        android:id="@+id/txtViewTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Welcome to CampRecApp"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

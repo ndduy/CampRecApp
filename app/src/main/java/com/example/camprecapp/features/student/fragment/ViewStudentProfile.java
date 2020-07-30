@@ -67,7 +67,7 @@ public class ViewStudentProfile extends Fragment {
         txtViewName = getView().findViewById(R.id.txtViewStudentName);
         txtViewEmail = getView().findViewById(R.id.txtViewStudentEmail);
         txtViewPhoneNo = getView().findViewById(R.id.txtViewStudentPhoneNo);
-        btnChangeProfilePic = getView().findViewById(R.id.btnUpdateProfilePic);
+        btnChangeProfilePic = getView().findViewById(R.id.btnUpdateProfileImg);
         btnResetPassword = getView().findViewById(R.id.btnResetPassword);
         profileImage = getView().findViewById(R.id.imgViewProfile);
         btnUpdateProfile = getView().findViewById(R.id.btnUpdateProfile);
@@ -89,6 +89,7 @@ public class ViewStudentProfile extends Fragment {
         resetPassword();
         changeProfilePic();
         updateProfileInfo();
+        btnLogOut();
 
     }
 
@@ -101,6 +102,11 @@ public class ViewStudentProfile extends Fragment {
                 //profileImage.setImageURI(imgUri);
 
                 uploadImageFirebase(imgUri);
+            }
+        }
+        if (requestCode == 1001) {
+            if (resultCode == Activity.RESULT_OK) {
+                viewProfile();
             }
         }
     }
@@ -130,6 +136,17 @@ public class ViewStudentProfile extends Fragment {
         });
     }
 
+    void changeProfilePic() {
+        btnChangeProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //open gallery
+                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGalleryIntent, 1000);
+            }
+        });
+    }
+
     void viewProfile() {
         if (firebaseUser != null) {
 
@@ -143,7 +160,7 @@ public class ViewStudentProfile extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                        Map<String, Object> map = doc.getData();
+                        //Map<String, Object> map = doc.getData();
 
                         txtViewName.setText(doc.getString("name"));
                         txtViewEmail.setText(doc.getString("email"));
@@ -151,19 +168,21 @@ public class ViewStudentProfile extends Fragment {
                     }
                 }
             });
-
-            btnLogOut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FirebaseAuth.getInstance().signOut();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    //whatever activity that was on this flag will be deleted when you press back button
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
-            });
         }
+    }
+
+    void btnLogOut() {
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                //whatever activity that was on this flag will be deleted when you press back button
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
     void resetPassword() {
@@ -205,17 +224,6 @@ public class ViewStudentProfile extends Fragment {
         });
     }
 
-    void changeProfilePic() {
-        btnChangeProfilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //open gallery
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent, 1000);
-            }
-        });
-    }
-
     void updateProfileInfo() {
         btnUpdateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,7 +232,7 @@ public class ViewStudentProfile extends Fragment {
                 i.putExtra("name", txtViewName.getText().toString());
                 i.putExtra("email", txtViewEmail.getText().toString());
                 i.putExtra("phone", txtViewPhoneNo.getText().toString());
-                startActivity(i);
+                startActivityForResult(i, 1001);
             }
         });
     }

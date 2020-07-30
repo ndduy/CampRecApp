@@ -16,9 +16,9 @@
             android:id="@+id/txtViewJobTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Title"
             android:textSize="18sp"
             android:textStyle="bold" />
 

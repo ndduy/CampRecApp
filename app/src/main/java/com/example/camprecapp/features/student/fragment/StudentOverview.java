@@ -31,7 +31,7 @@ public class StudentOverview extends Fragment {
 
     //ViewFlipper for Auto Sliding Image
     ViewFlipper viewFlipper;
-    int[] imgFlipper = {R.drawable.microsoft, R.drawable.google, R.drawable.amazon,R.drawable.apple,R.drawable.boeinglogo};
+    int[] imgFlipper = {R.drawable.microsoft, R.drawable.google, R.drawable.amazon, R.drawable.apple, R.drawable.boeinglogo};
 
 
     @Nullable
@@ -39,6 +39,7 @@ public class StudentOverview extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_student_overview, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -57,7 +58,9 @@ public class StudentOverview extends Fragment {
         } catch (Exception ex) {
             Log.e("ViewFlipper: ", ex.getMessage());
         }
+
     }
+
     void viewProfile() {
         if (firebaseUser != null) {
 
@@ -71,7 +74,6 @@ public class StudentOverview extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                        Map<String, Object> map = doc.getData();
 
                         txtViewName.setText(doc.getString("name"));
 
@@ -80,11 +82,12 @@ public class StudentOverview extends Fragment {
             });
         }
     }
-    public void flipImage(int img){
+
+    public void flipImage(int img) {
         ImageView imageView = new ImageView(getContext());
         imageView.setBackgroundResource(img);
         viewFlipper.addView(imageView);
-        viewFlipper.setFlipInterval(3000);
+        viewFlipper.setFlipInterval(1000);
         viewFlipper.setAutoStart(true);
         viewFlipper.setInAnimation(getContext(), android.R.anim.fade_in);
         viewFlipper.setOutAnimation(getContext(), android.R.anim.fade_out);

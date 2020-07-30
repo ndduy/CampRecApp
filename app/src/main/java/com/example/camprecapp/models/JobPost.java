@@ -11,7 +11,8 @@ public class JobPost {
     private String location;
     private String jobType;
     private DocumentReference company;
-    private @Exclude DocumentReference jobPost;
+    private @Exclude
+    DocumentReference jobPost;
 
     private @Exclude
     DocumentReference documentId;
@@ -97,6 +98,7 @@ public class JobPost {
     public DocumentReference getJobPost() {
         return jobPost;
     }
+
     @Exclude
     public void setJobPost(DocumentReference jobPost) {
         this.jobPost = jobPost;

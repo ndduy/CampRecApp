@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/navHome"
         android:icon="@drawable/ic_home"
-        android:title="Home"
-        />
+        android:title="Home" />
     <item
         android:id="@+id/navViewJobs"
         android:icon="@drawable/ic_viewapplication"
-        android:title="View Jobs"
-        />
+        android:title="View Jobs" />
     <item
         android:id="@+id/navViewSubJobs"
         android:icon="@drawable/ic_submittedjobs"
-        android:title = "Submitted Jobs"/>
+        android:title="Submitted Jobs" />
     <item
         android:id="@+id/navProfile"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"
-        />
-
+        android:title="Profile" />
 
 
 </menu>

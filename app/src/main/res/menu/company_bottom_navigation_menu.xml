@@ -3,24 +3,19 @@
     <item
         android:id="@+id/navHome"
         android:icon="@drawable/ic_home"
-        android:title="Home"
-        />
+        android:title="Home" />
     <item
         android:id="@+id/navJobs"
         android:icon="@drawable/ic_addjob"
-        android:title="Modify Jobs"
- />
+        android:title="Modify Jobs" />
     <item
         android:id="@+id/navViewAppli"
         android:icon="@drawable/ic_viewapplication"
-        android:title="Applicants"
-        />
+        android:title="View Applicants" />
     <item
         android:id="@+id/navProfile"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"
-        />
-
+        android:title="Profile" />
 
 
 </menu>

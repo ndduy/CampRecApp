@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -102,7 +103,7 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
                 String comment_content = editTextComment.getText().toString();
                 String uid = firebaseUser.getUid();
                 String uname = firebaseUser.getDisplayName();
-                String uimg = firebaseUser.getPhotoUrl().toString();
+                String uimg = firebaseUser.getPhotoUrl() == null ? null : firebaseUser.getPhotoUrl().toString();
                 Comment comment = new Comment(comment_content, uid, uimg, uname);
 
                 commentReference.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -157,15 +158,13 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
                 String date = timestampToString(getIntent().getExtras().getLong("postDate"));
                 txtPostDateName.setText(date + " by " + jobApplication.getJobPostData().getCompanyName());
 
-                if (jobApplication.getDocumentUrl() == null){
+                if (jobApplication.getDocumentUrl() == null) {
                     openAttachment.setVisibility(View.GONE);
-                }else{
+                } else {
                     openAttachment.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-
 
 
         // ini Recyclerview Comment
@@ -219,6 +218,5 @@ public class JobApplicationDetailActivity extends AppCompatActivity {
 
 
     }
-
 
 }

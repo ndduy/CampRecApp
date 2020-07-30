@@ -13,14 +13,7 @@ import com.example.camprecapp.features.company.fragment.CompanyJobs;
 import com.example.camprecapp.features.company.fragment.CompanyOverview;
 import com.example.camprecapp.features.company.fragment.CompanyViewSubApplication;
 import com.example.camprecapp.features.company.fragment.ViewCompanyProfile;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class CompanyHome extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;

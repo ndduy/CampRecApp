@@ -35,7 +35,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View row = LayoutInflater.from(mContext).inflate(R.layout.row_comment,parent,false);
+        View row = LayoutInflater.from(mContext).inflate(R.layout.row_comment, parent, false);
         return new CommentViewHolder(row);
     }
 
@@ -45,7 +45,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         Glide.with(mContext).load(mData.get(position).getUimg()).into(holder.img_user);
         holder.tv_name.setText(mData.get(position).getUname());
         holder.tv_content.setText(mData.get(position).getContent());
-        holder.tv_date.setText(timestampToString((Long)mData.get(position).getTimestamp()));
+        holder.tv_date.setText(timestampToString((Long) mData.get(position).getTimestamp()));
 
     }
 
@@ -54,10 +54,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return mData.size();
     }
 
-    public class CommentViewHolder extends RecyclerView.ViewHolder{
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
 
         ImageView img_user;
-        TextView tv_name,tv_content,tv_date;
+        TextView tv_name, tv_content, tv_date;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
@@ -69,12 +69,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
 
-
     private String timestampToString(long time) {
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(time);
-        String date = DateFormat.format("hh:mm",calendar).toString();
+        String date = DateFormat.format("hh:mm", calendar).toString();
         return date;
 
 

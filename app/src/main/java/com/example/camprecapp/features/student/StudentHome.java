@@ -5,13 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.camprecapp.R;
-import com.example.camprecapp.features.company.fragment.CompanyOverview;
 import com.example.camprecapp.features.student.fragment.StudentOverview;
 import com.example.camprecapp.features.student.fragment.StudentViewJobs;
 import com.example.camprecapp.features.student.fragment.StudentViewSubmittedJobs;
@@ -33,7 +30,7 @@ public class StudentHome extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.navHome:
                         openFragment(new StudentOverview());
 
